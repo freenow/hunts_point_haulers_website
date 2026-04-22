@@ -43,35 +43,45 @@
   }
   ::selection { background: var(--orange); color: #fff; }
   #root { min-height: 100vh; }
+
+  button { font-family: inherit; }
+  a { color: inherit; text-decoration: none; }
+  a:hover { color: var(--orange); }
+
+  /* Responsive utilities — inline styles are overridden via !important */
+  .show-mobile { display: none; }
+
+  @media (max-width: 960px) {
+    .hide-mobile { display: none !important; }
+    .show-mobile { display: flex !important; }
+
+    .r-grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
+    .r-grid-3 { grid-template-columns: 1fr !important; }
+    .r-grid-2 { grid-template-columns: 1fr !important; gap: 40px !important; }
+    .r-footer-grid { grid-template-columns: 1fr 1fr !important; gap: 32px !important; }
+    .r-flex-stack { flex-direction: column !important; align-items: flex-start !important; gap: 24px !important; }
+
+    .r-pad { padding-left: 24px !important; padding-right: 24px !important; }
+    .r-pad-v { padding-top: 64px !important; padding-bottom: 64px !important; }
+    .r-header-pad { padding: 110px 24px 56px !important; }
+
+    .r-services-row { grid-template-columns: 1fr !important; gap: 0 !important; }
+    .r-services-text { padding: 0 0 32px 0 !important; order: 2 !important; }
+    .r-services-img  { order: 1 !important; margin-bottom: 24px !important; }
+
+    .r-about-header-img { display: none !important; }
+
+    .r-hero-h1 { font-size: 48px !important; }
+    .r-page-h1 { font-size: 44px !important; }
+    .r-section-h2 { font-size: 34px !important; }
+  }
+
+  @media (max-width: 600px) {
+    .r-grid-4 { grid-template-columns: 1fr !important; }
+    .r-footer-grid { grid-template-columns: 1fr !important; }
+    .r-form-grid { grid-template-columns: 1fr !important; }
+  }
 </style>
-<template id="__bundler_thumbnail" data-bg-color="#0B1425">
-  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
-    <rect width="1200" height="800" fill="#0B1425"/>
-    <!-- Nav bar -->
-    <rect x="0" y="0" width="1200" height="64" fill="#111E33"/>
-    <rect x="48" y="22" width="32" height="20" fill="#F26522" style="clip-path:polygon(0 0,85% 0,100% 100%,15% 100%)"/>
-    <rect x="90" y="26" width="120" height="10" rx="2" fill="#F0EDE8" opacity="0.8"/>
-    <!-- Orange bottom accent -->
-    <rect x="0" y="796" width="600" height="4" fill="#F26522"/>
-    <!-- Hero text blocks -->
-    <rect x="48" y="140" width="40" height="3" fill="#F26522"/>
-    <rect x="48" y="200" width="520" height="56" rx="2" fill="#F0EDE8" opacity="0.9"/>
-    <rect x="48" y="268" width="440" height="56" rx="2" fill="#F26522" opacity="0.95"/>
-    <rect x="48" y="344" width="380" height="12" rx="2" fill="#F0EDE8" opacity="0.35"/>
-    <rect x="48" y="364" width="320" height="12" rx="2" fill="#F0EDE8" opacity="0.25"/>
-    <!-- CTA buttons -->
-    <rect x="48" y="410" width="160" height="44" fill="#F26522"/>
-    <rect x="224" y="410" width="140" height="44" fill="transparent" stroke="#F26522" stroke-width="2"/>
-    <!-- Stats bar -->
-    <rect x="0" y="520" width="300" height="80" fill="#111E33" opacity="0.9"/>
-    <rect x="301" y="520" width="300" height="80" fill="#111E33" opacity="0.9"/>
-    <rect x="602" y="520" width="300" height="80" fill="#111E33" opacity="0.9"/>
-    <rect x="903" y="520" width="297" height="80" fill="#111E33" opacity="0.9"/>
-    <rect x="0" y="520" width="300" height="3" fill="#F26522"/>
-    <!-- Diagonal accent -->
-    <line x1="700" y1="0" x2="750" y2="800" stroke="#F26522" stroke-width="1" opacity="0.15"/>
-  </svg>
-</template>
 </head>
 <body>
 <div id="root"></div>
@@ -137,15 +147,31 @@ function Navbar({ page, setPage, tweaks }) {
     return () => window.removeEventListener('scroll', fn);
   }, []);
 
+  useEffect(() => { setMobileOpen(false); }, [page]);
+
+  const isOpaque = scrolled || mobileOpen;
   const navStyle = {
     position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
-    background: scrolled ? 'rgba(11,20,37,0.97)' : 'transparent',
-    backdropFilter: scrolled ? 'blur(12px)' : 'none',
-    borderBottom: scrolled ? '1px solid rgba(240,237,232,0.08)' : '1px solid transparent',
-    transition: 'all 0.3s ease',
-    padding: '0 40px',
+    background: isOpaque ? 'rgba(11,20,37,0.97)' : 'transparent',
+    backdropFilter: isOpaque ? 'blur(12px)' : 'none',
+    borderBottom: isOpaque ? '1px solid rgba(240,237,232,0.08)' : '1px solid transparent',
+    transition: 'background 0.3s ease, border-color 0.3s ease',
+    padding: '0 24px',
   };
   const links = ['Home','Services','About Us','Contact'];
+
+  const linkBtn = (l, extra = {}) => (
+    <button key={l} onClick={() => setPage(l)} style={{
+      background: 'none', border: 'none', cursor: 'pointer',
+      fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: 15,
+      letterSpacing: '0.12em', textTransform: 'uppercase',
+      color: page === l ? tweaks.accentColor : 'var(--white)',
+      padding: '8px 16px',
+      borderBottom: page === l ? `2px solid ${tweaks.accentColor}` : '2px solid transparent',
+      transition: 'color 0.2s',
+      ...extra,
+    }}>{l}</button>
+  );
 
   return (
     <nav style={navStyle}>
@@ -155,67 +181,130 @@ function Navbar({ page, setPage, tweaks }) {
           <div style={{ width:38, height:38, background: tweaks.accentColor, display:'flex',alignItems:'center',justifyContent:'center',clipPath:'polygon(0 0, 85% 0, 100% 100%, 15% 100%)' }}>
             <span style={{ fontFamily:'Barlow Condensed',fontWeight:900,fontSize:18,color:'#fff',letterSpacing:'-0.02em' }}>H</span>
           </div>
-          <div>
+          <div style={{ textAlign:'left' }}>
             <div style={{ fontFamily:'Barlow Condensed',fontWeight:800,fontSize:20,color:'var(--white)',letterSpacing:'0.06em',textTransform:'uppercase',lineHeight:1 }}>Hunts Point</div>
             <div style={{ fontFamily:'Barlow Condensed',fontWeight:600,fontSize:12,color: tweaks.accentColor,letterSpacing:'0.2em',textTransform:'uppercase',lineHeight:1,marginTop:2 }}>Haulers LLC</div>
           </div>
         </button>
 
         {/* Desktop nav */}
-        <div style={{ display:'flex', gap:8, alignItems:'center' }}>
-          {links.map(l => (
-            <button key={l} onClick={() => setPage(l)} style={{
-              background: 'none', border: 'none', cursor: 'pointer',
-              fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: 15,
-              letterSpacing: '0.12em', textTransform: 'uppercase',
-              color: page === l ? tweaks.accentColor : 'var(--white)',
-              padding: '8px 16px',
-              borderBottom: page === l ? `2px solid ${tweaks.accentColor}` : '2px solid transparent',
-              transition: 'all 0.2s',
-            }}>{l}</button>
-          ))}
+        <div className="hide-mobile" style={{ display:'flex', gap:8, alignItems:'center' }}>
+          {links.map(l => linkBtn(l))}
           <button onClick={() => setPage('Contact')} style={{
             marginLeft: 16, background: tweaks.accentColor, border: 'none', cursor: 'pointer',
             fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 14, letterSpacing: '0.15em',
             textTransform: 'uppercase', color: '#fff', padding: '10px 24px',
             clipPath: 'polygon(0 0, 95% 0, 100% 100%, 5% 100%)',
-            transition: 'all 0.2s',
           }}>Get a Quote</button>
         </div>
+
+        {/* Mobile hamburger */}
+        <button
+          className="show-mobile"
+          aria-label="Toggle menu"
+          aria-expanded={mobileOpen}
+          onClick={() => setMobileOpen(o => !o)}
+          style={{
+            display:'none',
+            background:'none', border:'none', cursor:'pointer',
+            padding:10, flexDirection:'column', gap:5,
+          }}>
+          <span style={{ width:24, height:2, background:'var(--white)', transition:'transform 0.2s', transform: mobileOpen ? 'translateY(7px) rotate(45deg)' : 'none' }} />
+          <span style={{ width:24, height:2, background:'var(--white)', opacity: mobileOpen ? 0 : 1, transition:'opacity 0.2s' }} />
+          <span style={{ width:24, height:2, background:'var(--white)', transition:'transform 0.2s', transform: mobileOpen ? 'translateY(-7px) rotate(-45deg)' : 'none' }} />
+        </button>
       </div>
+
+      {/* Mobile menu panel */}
+      {mobileOpen && (
+        <div className="show-mobile" style={{
+          display:'none', flexDirection:'column',
+          padding:'12px 16px 20px',
+          borderTop:'1px solid var(--rule)',
+        }}>
+          {links.map(l => (
+            <button key={l} onClick={() => setPage(l)} style={{
+              background:'none', border:'none', cursor:'pointer', textAlign:'left',
+              fontFamily:'Barlow Condensed', fontWeight:700, fontSize:18,
+              letterSpacing:'0.12em', textTransform:'uppercase',
+              color: page === l ? tweaks.accentColor : 'var(--white)',
+              padding:'14px 8px',
+              borderBottom: '1px solid var(--rule)',
+            }}>{l}</button>
+          ))}
+          <button onClick={() => setPage('Contact')} style={{
+            marginTop:16, background:tweaks.accentColor, border:'none', cursor:'pointer',
+            fontFamily:'Barlow Condensed', fontWeight:800, fontSize:15, letterSpacing:'0.15em',
+            textTransform:'uppercase', color:'#fff', padding:'14px 24px',
+            clipPath:'polygon(0 0, 97% 0, 100% 100%, 3% 100%)',
+          }}>Get a Quote</button>
+        </div>
+      )}
     </nav>
   );
 }
 
 /* ─── FOOTER ─── */
 function Footer({ setPage, tweaks }) {
+  const colTitle = { fontFamily:'Barlow Condensed',fontWeight:700,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.2em',textTransform:'uppercase',marginBottom:16 };
+  const linkStyle = {
+    background:'none', border:'none', padding:0, cursor:'pointer',
+    color:'var(--white-dim)', fontSize:14, lineHeight:1, marginBottom:12,
+    display:'block', textAlign:'left', fontFamily:'inherit',
+    transition:'color 0.15s',
+  };
+
+  const serviceLinks = [
+    'Interstate Freight',
+    'NYC Metro Delivery',
+    'Produce & Reefer',
+    'Port-Access Routes',
+  ];
+  const companyLinks = [
+    { label:'About Us', page:'About Us' },
+    { label:'Our Services', page:'Services' },
+    { label:'Contact', page:'Contact' },
+    { label:'Get a Quote', page:'Contact' },
+  ];
+
   return (
-    <footer style={{ background: '#070E1A', borderTop: '1px solid var(--rule)', padding: '64px 40px 32px' }}>
+    <footer style={{ background: '#070E1A', borderTop: '1px solid var(--rule)', padding: '64px 24px 32px' }}>
       <div style={{ maxWidth: 1280, margin: '0 auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: 48, marginBottom: 48 }}>
+        <div className="r-footer-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: 48, marginBottom: 48 }}>
           <div>
             <div style={{ fontFamily:'Barlow Condensed',fontWeight:800,fontSize:24,color:'var(--white)',letterSpacing:'0.06em',textTransform:'uppercase',marginBottom:6 }}>Hunts Point Haulers LLC</div>
             <div style={{ fontFamily:'Barlow Condensed',fontWeight:600,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.18em',textTransform:'uppercase',marginBottom:16 }}>Interstate Freight Carrier · Bogota, NJ</div>
             <p style={{ color:'var(--white-dim)',fontSize:14,lineHeight:1.7,maxWidth:280 }}>Reliable interstate freight and NYC metro delivery services. Specialists in Hunts Point Food Distribution and port-access logistics.</p>
           </div>
-          {[
-            { title:'Services', items:['Interstate Freight','NYC Metro Delivery','Produce & Reefer','Port-Access Routes'] },
-            { title:'Company', items:['About Us','Our Team','Careers','News'] },
-            { title:'Contact', items:['(201) 555-0182','dispatch@hphaulers.com','Bogota, NJ 07603','24/7 Dispatch'] },
-          ].map(col => (
-            <div key={col.title}>
-              <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.2em',textTransform:'uppercase',marginBottom:16 }}>{col.title}</div>
-              {col.items.map(item => (
-                <div key={item} style={{ color:'var(--white-dim)',fontSize:14,lineHeight:1,marginBottom:10 }}>{item}</div>
-              ))}
-            </div>
-          ))}
+
+          <div>
+            <div style={colTitle}>Services</div>
+            {serviceLinks.map(item => (
+              <button key={item} onClick={() => setPage('Services')} style={linkStyle}>{item}</button>
+            ))}
+          </div>
+
+          <div>
+            <div style={colTitle}>Company</div>
+            {companyLinks.map(({ label, page }) => (
+              <button key={label} onClick={() => setPage(page)} style={linkStyle}>{label}</button>
+            ))}
+          </div>
+
+          <div>
+            <div style={colTitle}>Contact</div>
+            <a href="tel:2015550182" style={{ ...linkStyle, textDecoration:'none' }}>(201) 555-0182</a>
+            <a href="mailto:dispatch@huntspointshaulers.com" style={{ ...linkStyle, textDecoration:'none' }}>dispatch@huntspointshaulers.com</a>
+            <div style={{ color:'var(--white-dim)',fontSize:14,lineHeight:1,marginBottom:12 }}>Bogota, NJ 07603</div>
+            <div style={{ color:'var(--white-dim)',fontSize:14,lineHeight:1 }}>24/7 Dispatch</div>
+          </div>
         </div>
-        <div style={{ borderTop:'1px solid var(--rule)', paddingTop:24, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+
+        <div style={{ borderTop:'1px solid var(--rule)', paddingTop:24, display:'flex', justifyContent:'space-between', alignItems:'center', gap:16, flexWrap:'wrap' }}>
           <div style={{ color:'rgba(240,237,232,0.3)',fontSize:12,letterSpacing:'0.05em' }}>© 2026 Hunts Point Haulers LLC. All rights reserved. MC# 000000 · DOT# 000000</div>
           <div style={{ display:'flex',gap:24 }}>
             {['Privacy Policy','Terms of Service'].map(t => (
-              <span key={t} style={{ color:'rgba(240,237,232,0.3)',fontSize:12,letterSpacing:'0.05em',cursor:'pointer' }}>{t}</span>
+              <span key={t} style={{ color:'rgba(240,237,232,0.3)',fontSize:12,letterSpacing:'0.05em' }}>{t}</span>
             ))}
           </div>
         </div>
@@ -226,9 +315,6 @@ function Footer({ setPage, tweaks }) {
 
 /* ─── HOME PAGE ─── */
 function HomePage({ setPage, tweaks }) {
-  const [formData, setFormData] = useState({ name:'',email:'',phone:'',origin:'',dest:'',freight:'' });
-  const [submitted, setSubmitted] = useState(false);
-
   const stats = [
     { val:'15+', label:'Years Operating' },
     { val:'48', label:'States Licensed' },
@@ -263,7 +349,7 @@ function HomePage({ setPage, tweaks }) {
         {/* Orange slash */}
         <div style={{ position:'absolute',left:0,bottom:0,right:0,height:4,background:`linear-gradient(90deg, ${tweaks.accentColor}, transparent)`,zIndex:2 }} />
 
-        <div style={{ position:'relative',zIndex:1,maxWidth:1280,margin:'0 auto',padding:'120px 40px 80px',width:'100%' }}>
+        <div className="r-pad" style={{ position:'relative',zIndex:1,maxWidth:1280,margin:'0 auto',padding:'120px 40px 80px',width:'100%' }}>
           <div style={{ maxWidth:780 }}>
             {/* Eyebrow */}
             <div style={{ display:'flex',alignItems:'center',gap:12,marginBottom:32 }}>
@@ -271,10 +357,10 @@ function HomePage({ setPage, tweaks }) {
               <span style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.3em',textTransform:'uppercase' }}>Interstate Freight Carrier · Est. 2009</span>
             </div>
 
-            <h1 style={{ fontSize:'clamp(52px,8vw,96px)',color:'var(--white)',marginBottom:8,lineHeight:0.95 }}>
+            <h1 className="r-hero-h1" style={{ fontSize:'clamp(44px,8vw,96px)',color:'var(--white)',marginBottom:8,lineHeight:0.95 }}>
               MOVING FREIGHT.
             </h1>
-            <h1 style={{ fontSize:'clamp(52px,8vw,96px)',color:tweaks.accentColor,marginBottom:32,lineHeight:0.95 }}>
+            <h1 className="r-hero-h1" style={{ fontSize:'clamp(44px,8vw,96px)',color:tweaks.accentColor,marginBottom:32,lineHeight:0.95 }}>
               DELIVERING TRUST.
             </h1>
 
@@ -300,7 +386,7 @@ function HomePage({ setPage, tweaks }) {
           </div>
 
           {/* Stats bar */}
-          <div style={{ marginTop:80, display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:1, background:'var(--rule)' }}>
+          <div className="r-grid-4" style={{ marginTop:80, display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:1, background:'var(--rule)' }}>
             {stats.map((s,i) => (
               <div key={i} style={{ background:'rgba(11,20,37,0.85)',backdropFilter:'blur(8px)',padding:'24px 28px',borderTop:`2px solid ${i===0?tweaks.accentColor:'transparent'}` }}>
                 <div style={{ fontFamily:'Barlow Condensed',fontWeight:900,fontSize:40,color:i===0?tweaks.accentColor:'var(--white)',lineHeight:1 }}>{s.val}</div>
@@ -312,16 +398,16 @@ function HomePage({ setPage, tweaks }) {
       </div>
 
       {/* SERVICES STRIP */}
-      <div style={{ background:'var(--navy-mid)',borderTop:`1px solid ${tweaks.accentColor}22`,borderBottom:'1px solid var(--rule)',padding:'80px 40px' }}>
+      <div className="r-pad r-pad-v" style={{ background:'var(--navy-mid)',borderTop:`1px solid ${tweaks.accentColor}22`,borderBottom:'1px solid var(--rule)',padding:'80px 40px' }}>
         <div style={{ maxWidth:1280,margin:'0 auto' }}>
-          <div style={{ display:'flex',alignItems:'flex-end',justifyContent:'space-between',marginBottom:56 }}>
+          <div className="r-flex-stack" style={{ display:'flex',alignItems:'flex-end',justifyContent:'space-between',marginBottom:56,gap:24 }}>
             <div>
               <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.25em',textTransform:'uppercase',marginBottom:12 }}>What We Do</div>
-              <h2 style={{ fontSize:48,color:'var(--white)' }}>CORE SERVICES</h2>
+              <h2 className="r-section-h2" style={{ fontSize:48,color:'var(--white)' }}>CORE SERVICES</h2>
             </div>
             <button onClick={() => setPage('Services')} style={{ background:'none',border:`1px solid ${tweaks.accentColor}`,color:tweaks.accentColor,fontFamily:'Barlow Condensed',fontWeight:700,fontSize:13,letterSpacing:'0.15em',textTransform:'uppercase',padding:'12px 28px',cursor:'pointer' }}>View All Services →</button>
           </div>
-          <div style={{ display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:2 }}>
+          <div className="r-grid-4" style={{ display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:2 }}>
             {services.map((s,i) => (
               <ServiceCard key={i} s={s} i={i} tweaks={tweaks} />
             ))}
@@ -330,11 +416,11 @@ function HomePage({ setPage, tweaks }) {
       </div>
 
       {/* WHY US */}
-      <div style={{ padding:'100px 40px',background:tweaks.navyColor }}>
-        <div style={{ maxWidth:1280,margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 1fr',gap:80,alignItems:'center' }}>
+      <div className="r-pad r-pad-v" style={{ padding:'100px 40px',background:tweaks.navyColor }}>
+        <div className="r-grid-2" style={{ maxWidth:1280,margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 1fr',gap:80,alignItems:'center' }}>
           <div>
             <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.25em',textTransform:'uppercase',marginBottom:12 }}>Why Choose Us</div>
-            <h2 style={{ fontSize:52,color:'var(--white)',marginBottom:24 }}>BUILT FOR NYC FREIGHT</h2>
+            <h2 className="r-section-h2" style={{ fontSize:52,color:'var(--white)',marginBottom:24 }}>BUILT FOR NYC FREIGHT</h2>
             <p style={{ color:'var(--white-dim)',fontSize:16,lineHeight:1.8,marginBottom:40 }}>
               Operating in and out of New York City requires more than a truck and a license. It demands knowledge of every restricted route, every permit requirement, every delivery window at every major distribution hub. We've built that knowledge over 15 years.
             </p>
@@ -361,14 +447,14 @@ function HomePage({ setPage, tweaks }) {
       </div>
 
       {/* CTA BANNER */}
-      <div style={{ background:tweaks.accentColor,padding:'64px 40px',position:'relative',overflow:'hidden' }}>
+      <div className="r-pad" style={{ background:tweaks.accentColor,padding:'64px 40px',position:'relative',overflow:'hidden' }}>
         <div style={{ position:'absolute',right:-40,top:-40,width:300,height:300,background:'rgba(0,0,0,0.1)',borderRadius:'50%' }} />
-        <div style={{ maxWidth:1280,margin:'0 auto',display:'flex',alignItems:'center',justifyContent:'space-between',position:'relative',zIndex:1 }}>
+        <div className="r-flex-stack" style={{ maxWidth:1280,margin:'0 auto',display:'flex',alignItems:'center',justifyContent:'space-between',position:'relative',zIndex:1,gap:32,flexWrap:'wrap' }}>
           <div>
-            <h2 style={{ fontSize:48,color:'#fff',marginBottom:8 }}>READY TO MOVE YOUR FREIGHT?</h2>
-            <p style={{ color:'rgba(255,255,255,0.8)',fontSize:16 }}>Get a competitive quote within 2 hours. Available 24/7 for time-sensitive loads.</p>
+            <h2 className="r-section-h2" style={{ fontSize:48,color:'#fff',marginBottom:8 }}>READY TO MOVE YOUR FREIGHT?</h2>
+            <p style={{ color:'rgba(255,255,255,0.85)',fontSize:16 }}>Get a competitive quote within 2 hours. Available 24/7 for time-sensitive loads.</p>
           </div>
-          <div style={{ display:'flex',gap:16,flexShrink:0,marginLeft:40 }}>
+          <div style={{ display:'flex',gap:16,flexShrink:0,flexWrap:'wrap' }}>
             <a href="tel:2015550182" style={{ background:'#fff',color:tweaks.accentColor,fontFamily:'Barlow Condensed',fontWeight:800,fontSize:16,letterSpacing:'0.1em',textTransform:'uppercase',padding:'18px 36px',textDecoration:'none',display:'block' }}>(201) 555-0182</a>
             <button onClick={() => setPage('Contact')} style={{ background:'rgba(0,0,0,0.2)',border:'2px solid #fff',color:'#fff',fontFamily:'Barlow Condensed',fontWeight:800,fontSize:16,letterSpacing:'0.1em',textTransform:'uppercase',padding:'18px 36px',cursor:'pointer' }}>Request Quote</button>
           </div>
@@ -433,30 +519,30 @@ function ServicesPage({ setPage, tweaks }) {
   return (
     <div>
       {/* Header */}
-      <div style={{ background:'var(--navy-mid)',padding:'140px 40px 80px',borderBottom:`3px solid ${tweaks.accentColor}` }}>
+      <div className="r-header-pad" style={{ background:'var(--navy-mid)',padding:'140px 40px 80px',borderBottom:`3px solid ${tweaks.accentColor}` }}>
         <div style={{ maxWidth:1280,margin:'0 auto' }}>
           <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.25em',textTransform:'uppercase',marginBottom:12 }}>What We Carry</div>
-          <h1 style={{ fontSize:72,color:'var(--white)',marginBottom:20 }}>OUR SERVICES</h1>
+          <h1 className="r-page-h1" style={{ fontSize:72,color:'var(--white)',marginBottom:20 }}>OUR SERVICES</h1>
           <p style={{ color:'var(--white-dim)',fontSize:18,maxWidth:600,lineHeight:1.7 }}>Purpose-built for the demands of the NYC freight corridor. Every service we offer is backed by hands-on operational experience.</p>
         </div>
       </div>
 
       {/* Services */}
-      <div style={{ padding:'0 40px 100px',background:tweaks.navyColor }}>
+      <div className="r-pad" style={{ padding:'0 40px 100px',background:tweaks.navyColor }}>
         <div style={{ maxWidth:1280,margin:'0 auto' }}>
           {services.map((s,i) => (
-            <div key={i} style={{
+            <div key={i} className="r-services-row" style={{
               display:'grid',
-              gridTemplateColumns: i%2===0 ? '1fr 1fr' : '1fr 1fr',
+              gridTemplateColumns: '1fr 1fr',
               gap:0,
               borderBottom:'1px solid var(--rule)',
               padding:'80px 0',
             }}>
-              <div style={{ order: i%2===0 ? 1 : 2, padding: i%2===0 ? '0 64px 0 0' : '0 0 0 64px' }}>
+              <div className="r-services-text" style={{ order: i%2===0 ? 1 : 2, padding: i%2===0 ? '0 64px 0 0' : '0 0 0 64px' }}>
                 <div style={{ display:'flex',alignItems:'center',gap:12,marginBottom:24 }}>
                   <span style={{ background:tweaks.accentColor,color:'#fff',fontFamily:'Barlow Condensed',fontWeight:700,fontSize:11,letterSpacing:'0.2em',textTransform:'uppercase',padding:'4px 12px' }}>{s.tag}</span>
                 </div>
-                <h2 style={{ fontSize:48,color:'var(--white)',marginBottom:20 }}>{s.title.toUpperCase()}</h2>
+                <h2 className="r-section-h2" style={{ fontSize:48,color:'var(--white)',marginBottom:20 }}>{s.title.toUpperCase()}</h2>
                 <p style={{ color:'var(--white-dim)',fontSize:15,lineHeight:1.8,marginBottom:32 }}>{s.desc}</p>
                 <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:10 }}>
                   {s.specs.map((spec,j) => (
@@ -467,7 +553,7 @@ function ServicesPage({ setPage, tweaks }) {
                   ))}
                 </div>
               </div>
-              <div style={{ order: i%2===0 ? 2 : 1,position:'relative' }}>
+              <div className="r-services-img" style={{ order: i%2===0 ? 2 : 1,position:'relative' }}>
                 <ImgPlaceholder label={s.img} height={340} style={{ width:'100%' }} />
                 <div style={{ position:'absolute',bottom:0,left:0,width:'100%',height:3,background:`linear-gradient(90deg, ${tweaks.accentColor}, transparent)` }} />
               </div>
@@ -477,9 +563,9 @@ function ServicesPage({ setPage, tweaks }) {
       </div>
 
       {/* CTA */}
-      <div style={{ background:tweaks.accentColor,padding:'60px 40px' }}>
+      <div className="r-pad" style={{ background:tweaks.accentColor,padding:'60px 40px' }}>
         <div style={{ maxWidth:1280,margin:'0 auto',textAlign:'center' }}>
-          <h2 style={{ fontSize:48,color:'#fff',marginBottom:16 }}>NEED A CUSTOM FREIGHT SOLUTION?</h2>
+          <h2 className="r-section-h2" style={{ fontSize:48,color:'#fff',marginBottom:16 }}>NEED A CUSTOM FREIGHT SOLUTION?</h2>
           <p style={{ color:'rgba(255,255,255,0.85)',fontSize:16,marginBottom:32 }}>Our dispatch team is available 24/7 to discuss your specific requirements.</p>
           <button onClick={() => setPage('Contact')} style={{ background:'#fff',color:tweaks.accentColor,border:'none',fontFamily:'Barlow Condensed',fontWeight:800,fontSize:16,letterSpacing:'0.15em',textTransform:'uppercase',padding:'18px 48px',cursor:'pointer' }}>Contact Our Team →</button>
         </div>
@@ -500,23 +586,23 @@ function AboutPage({ setPage, tweaks }) {
   return (
     <div>
       {/* Header */}
-      <div style={{ background:'var(--navy-mid)',padding:'140px 40px 80px',borderBottom:`3px solid ${tweaks.accentColor}`,position:'relative',overflow:'hidden' }}>
-        <div style={{ position:'absolute',right:0,top:0,width:'45%',height:'100%' }}>
+      <div className="r-header-pad" style={{ background:'var(--navy-mid)',padding:'140px 40px 80px',borderBottom:`3px solid ${tweaks.accentColor}`,position:'relative',overflow:'hidden' }}>
+        <div className="r-about-header-img" style={{ position:'absolute',right:0,top:0,width:'45%',height:'100%' }}>
           <ImgPlaceholder label="COMPANY FOUNDER / FLEET PHOTO" height="100%" style={{ width:'100%',height:'100%' }} />
           <div style={{ position:'absolute',inset:0,background:`linear-gradient(90deg, var(--navy-mid) 0%, transparent 60%)` }} />
         </div>
         <div style={{ maxWidth:1280,margin:'0 auto',position:'relative',zIndex:1 }}>
           <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.25em',textTransform:'uppercase',marginBottom:12 }}>Our Story</div>
-          <h1 style={{ fontSize:72,color:'var(--white)',marginBottom:20 }}>ABOUT US</h1>
+          <h1 className="r-page-h1" style={{ fontSize:72,color:'var(--white)',marginBottom:20 }}>ABOUT US</h1>
           <p style={{ color:'var(--white-dim)',fontSize:18,maxWidth:560,lineHeight:1.7 }}>Founded in Bogota, NJ, by operators who grew up in the freight industry. We know this city, these roads, and this business.</p>
         </div>
       </div>
 
       {/* Story section */}
-      <div style={{ padding:'100px 40px',background:tweaks.navyColor }}>
-        <div style={{ maxWidth:1280,margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 1fr',gap:80 }}>
+      <div className="r-pad r-pad-v" style={{ padding:'100px 40px',background:tweaks.navyColor }}>
+        <div className="r-grid-2" style={{ maxWidth:1280,margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 1fr',gap:80 }}>
           <div>
-            <h2 style={{ fontSize:48,color:'var(--white)',marginBottom:32 }}>HUNTS POINT IS IN OUR DNA</h2>
+            <h2 className="r-section-h2" style={{ fontSize:48,color:'var(--white)',marginBottom:32 }}>HUNTS POINT IS IN OUR DNA</h2>
             <p style={{ color:'var(--white-dim)',fontSize:16,lineHeight:1.85,marginBottom:24 }}>
               Hunts Point Haulers LLC was built around one conviction: the businesses that depend on the Hunts Point Food Distribution Center — and the broader NYC freight network — deserve a carrier that treats their loads like their own livelihood.
             </p>
@@ -539,10 +625,10 @@ function AboutPage({ setPage, tweaks }) {
       </div>
 
       {/* Values */}
-      <div style={{ background:'var(--navy-mid)',padding:'80px 40px',borderTop:'1px solid var(--rule)' }}>
+      <div className="r-pad" style={{ background:'var(--navy-mid)',padding:'80px 40px',borderTop:'1px solid var(--rule)' }}>
         <div style={{ maxWidth:1280,margin:'0 auto' }}>
-          <h2 style={{ fontSize:48,color:'var(--white)',marginBottom:48,textAlign:'center' }}>HOW WE OPERATE</h2>
-          <div style={{ display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:2 }}>
+          <h2 className="r-section-h2" style={{ fontSize:48,color:'var(--white)',marginBottom:48,textAlign:'center' }}>HOW WE OPERATE</h2>
+          <div className="r-grid-4" style={{ display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:2 }}>
             {values.map((v,i) => (
               <div key={i} style={{ background:tweaks.navyColor,padding:'40px 32px',borderTop:`3px solid ${i===0?tweaks.accentColor:'var(--rule)'}` }}>
                 <div style={{ fontFamily:'Barlow Condensed',fontWeight:900,fontSize:52,color:`${tweaks.accentColor}22`,lineHeight:1,marginBottom:16 }}>0{i+1}</div>
@@ -555,10 +641,10 @@ function AboutPage({ setPage, tweaks }) {
       </div>
 
       {/* Credentials */}
-      <div style={{ padding:'80px 40px',background:tweaks.navyColor }}>
+      <div className="r-pad" style={{ padding:'80px 40px',background:tweaks.navyColor }}>
         <div style={{ maxWidth:1280,margin:'0 auto' }}>
-          <h2 style={{ fontSize:48,color:'var(--white)',marginBottom:48,textAlign:'center' }}>CREDENTIALS & COMPLIANCE</h2>
-          <div style={{ display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:24 }}>
+          <h2 className="r-section-h2" style={{ fontSize:48,color:'var(--white)',marginBottom:48,textAlign:'center' }}>CREDENTIALS & COMPLIANCE</h2>
+          <div className="r-grid-3" style={{ display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:24 }}>
             {[
               { label:'FMCSA Authority', detail:'Active Motor Carrier Authority\nMC# 000000' },
               { label:'USDOT Registered', detail:'United States DOT Number\nDOT# 000000' },
@@ -619,8 +705,8 @@ function ContactPage({ tweaks }) {
         <div style={{ width:72,height:72,background:tweaks.accentColor,margin:'0 auto 32px',display:'flex',alignItems:'center',justifyContent:'center',clipPath:'polygon(0 0, 85% 0, 100% 100%, 15% 100%)' }}>
           <span style={{ fontSize:32,color:'#fff' }}>✓</span>
         </div>
-        <h2 style={{ fontFamily:'Barlow Condensed',fontWeight:900,fontSize:48,color:'var(--white)',marginBottom:16 }}>QUOTE REQUEST RECEIVED</h2>
-        <p style={{ color:'var(--white-dim)',fontSize:16,lineHeight:1.7,marginBottom:32 }}>Our dispatch team will review your request and contact you within 2 hours. For urgent loads, call us directly at <strong style={{ color:'var(--white)'}}>(201) 555-0182</strong>.</p>
+        <h2 className="r-section-h2" style={{ fontFamily:'Barlow Condensed',fontWeight:900,fontSize:48,color:'var(--white)',marginBottom:16 }}>THANKS — PLEASE CALL US</h2>
+        <p style={{ color:'var(--white-dim)',fontSize:16,lineHeight:1.7,marginBottom:32 }}>Our online form is being upgraded. To lock in a quote now, call dispatch at <a href="tel:2015550182" style={{ color:'var(--white)',fontWeight:700 }}>(201) 555-0182</a> or email <a href="mailto:quotes@huntspointshaulers.com" style={{ color:'var(--white)',fontWeight:700 }}>quotes@huntspointshaulers.com</a>.</p>
         <button onClick={() => setSubmitted(false)} style={{ background:tweaks.accentColor,border:'none',color:'#fff',fontFamily:'Barlow Condensed',fontWeight:800,fontSize:14,letterSpacing:'0.15em',textTransform:'uppercase',padding:'14px 36px',cursor:'pointer' }}>Submit Another Request</button>
       </div>
     </div>
@@ -629,28 +715,28 @@ function ContactPage({ tweaks }) {
   return (
     <div>
       {/* Header */}
-      <div style={{ background:'var(--navy-mid)',padding:'140px 40px 80px',borderBottom:`3px solid ${tweaks.accentColor}` }}>
+      <div className="r-header-pad" style={{ background:'var(--navy-mid)',padding:'140px 40px 80px',borderBottom:`3px solid ${tweaks.accentColor}` }}>
         <div style={{ maxWidth:1280,margin:'0 auto' }}>
           <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.25em',textTransform:'uppercase',marginBottom:12 }}>Get in Touch</div>
-          <h1 style={{ fontSize:72,color:'var(--white)',marginBottom:20 }}>CONTACT US</h1>
+          <h1 className="r-page-h1" style={{ fontSize:72,color:'var(--white)',marginBottom:20 }}>CONTACT US</h1>
           <p style={{ color:'var(--white-dim)',fontSize:18,maxWidth:520 }}>For quotes, dispatch, or general inquiries. We respond within 2 hours during business hours, and 24/7 for time-sensitive loads.</p>
         </div>
       </div>
 
-      <div style={{ padding:'80px 40px',background:tweaks.navyColor }}>
-        <div style={{ maxWidth:1280,margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 2fr',gap:80 }}>
+      <div className="r-pad" style={{ padding:'80px 40px',background:tweaks.navyColor }}>
+        <div className="r-grid-2" style={{ maxWidth:1280,margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 2fr',gap:80 }}>
 
           {/* Contact info */}
           <div>
             <div style={{ marginBottom:48 }}>
               <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:12,color:tweaks.accentColor,letterSpacing:'0.2em',textTransform:'uppercase',marginBottom:6 }}>Phone</div>
-              <div style={{ fontFamily:'Barlow Condensed',fontWeight:800,fontSize:28,color:'var(--white)' }}>(201) 555-0182</div>
+              <a href="tel:2015550182" style={{ fontFamily:'Barlow Condensed',fontWeight:800,fontSize:28,color:'var(--white)',textDecoration:'none' }}>(201) 555-0182</a>
               <div style={{ color:'var(--white-dim)',fontSize:13,marginTop:4 }}>24/7 Dispatch Available</div>
             </div>
             <div style={{ marginBottom:48 }}>
               <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:12,color:tweaks.accentColor,letterSpacing:'0.2em',textTransform:'uppercase',marginBottom:6 }}>Email</div>
-              <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:20,color:'var(--white)' }}>dispatch@hphaulers.com</div>
-              <div style={{ color:'var(--white-dim)',fontSize:13,marginTop:4 }}>Quotes: quotes@hphaulers.com</div>
+              <a href="mailto:dispatch@huntspointshaulers.com" style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:20,color:'var(--white)',textDecoration:'none',wordBreak:'break-word' }}>dispatch@huntspointshaulers.com</a>
+              <div style={{ color:'var(--white-dim)',fontSize:13,marginTop:4 }}>Quotes: <a href="mailto:quotes@huntspointshaulers.com" style={{ color:'var(--white-dim)',textDecoration:'none' }}>quotes@huntspointshaulers.com</a></div>
             </div>
             <div style={{ marginBottom:48 }}>
               <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:12,color:tweaks.accentColor,letterSpacing:'0.2em',textTransform:'uppercase',marginBottom:6 }}>Office</div>
@@ -662,7 +748,7 @@ function ContactPage({ tweaks }) {
                 Mon–Fri: 6:00 AM – 8:00 PM<br/>
                 Saturday: 7:00 AM – 4:00 PM<br/>
                 Sunday: Emergency dispatch only<br/>
-                <span style={{ color:tweaks.accentColor,fontWeight:600 }}>24/7 Emergency: (201) 555-0199</span>
+                <a href="tel:2015550199" style={{ color:tweaks.accentColor,fontWeight:600,textDecoration:'none' }}>24/7 Emergency: (201) 555-0199</a>
               </div>
             </div>
           </div>
@@ -672,7 +758,7 @@ function ContactPage({ tweaks }) {
             <div style={{ fontFamily:'Barlow Condensed',fontWeight:800,fontSize:32,color:'var(--white)',marginBottom:8 }}>REQUEST A FREIGHT QUOTE</div>
             <div style={{ width:48,height:3,background:tweaks.accentColor,marginBottom:36 }} />
             <form onSubmit={handleSubmit}>
-              <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:20,marginBottom:20 }}>
+              <div className="r-form-grid" style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:20,marginBottom:20 }}>
                 {[
                   { field:'name',label:'Full Name *',placeholder:'John Smith' },
                   { field:'company',label:'Company',placeholder:'Acme Distributors Inc.' },
@@ -689,7 +775,7 @@ function ContactPage({ tweaks }) {
                 ))}
               </div>
 
-              <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:20,marginBottom:20 }}>
+              <div className="r-form-grid" style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:20,marginBottom:20 }}>
                 {[
                   { field:'origin',label:'Origin City / State *',placeholder:'Philadelphia, PA' },
                   { field:'dest',label:'Destination City / State *',placeholder:'Hunts Point, Bronx NY' },
@@ -734,72 +820,34 @@ function ContactPage({ tweaks }) {
   );
 }
 
-/* ─── TWEAKS PANEL ─── */
-function TweaksPanel({ tweaks, setTweaks, visible }) {
-  if (!visible) return null;
-  const update = (key, val) => {
-    const next = { ...tweaks, [key]: val };
-    setTweaks(next);
-    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: next }, '*');
-  };
-  return (
-    <div style={{ position:'fixed',bottom:24,right:24,zIndex:9999,background:'#0d1a2e',border:'1px solid rgba(240,237,232,0.15)',boxShadow:'0 20px 60px rgba(0,0,0,0.6)',padding:'24px',width:280,borderTop:`3px solid ${tweaks.accentColor}` }}>
-      <div style={{ fontFamily:'Barlow Condensed',fontWeight:800,fontSize:14,color:'var(--white)',letterSpacing:'0.15em',textTransform:'uppercase',marginBottom:20 }}>Tweaks</div>
-      <div style={{ marginBottom:20 }}>
-        <label style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:11,color:'var(--white-dim)',letterSpacing:'0.15em',textTransform:'uppercase',display:'block',marginBottom:8 }}>Accent Color</label>
-        <div style={{ display:'flex',gap:8,flexWrap:'wrap' }}>
-          {['#F26522','#E8B31A','#E82F37','#2F9EE8','#27AE7B'].map(c => (
-            <button key={c} onClick={() => update('accentColor',c)} style={{ width:28,height:28,background:c,border:tweaks.accentColor===c?'2px solid #fff':'2px solid transparent',cursor:'pointer',borderRadius:2 }} />
-          ))}
-        </div>
-      </div>
-      <div style={{ marginBottom:20 }}>
-        <label style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:11,color:'var(--white-dim)',letterSpacing:'0.15em',textTransform:'uppercase',display:'block',marginBottom:8 }}>Background Tone</label>
-        <div style={{ display:'flex',gap:8 }}>
-          {[['#0B1425','Navy'],['#0F1510','Forest'],['#1A0F0A','Espresso'],['#0A0A14','Onyx']].map(([c,l]) => (
-            <button key={c} onClick={() => update('navyColor',c)} style={{ background:c,border:tweaks.navyColor===c?`2px solid ${tweaks.accentColor}`:'2px solid rgba(255,255,255,0.15)',color:'rgba(255,255,255,0.6)',fontFamily:'Barlow Condensed',fontSize:11,letterSpacing:'0.08em',padding:'6px 10px',cursor:'pointer' }}>{l}</button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /* ─── APP ─── */
 function App() {
   const [page, setPage] = useState(() => localStorage.getItem('hph_page') || 'Home');
-  const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
-  const [tweaksVisible, setTweaksVisible] = useState(false);
+  const tweaks = TWEAK_DEFAULTS;
 
   useEffect(() => {
     localStorage.setItem('hph_page', page);
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [page]);
 
-  // Apply tweaks to CSS variables
   useEffect(() => {
     document.documentElement.style.setProperty('--navy', tweaks.navyColor);
     document.documentElement.style.setProperty('--navy-mid', tweaks.navyColor === '#0B1425' ? '#111E33' : tweaks.navyColor + 'cc');
-    document.documentElement.style.setProperty('--navy-light', '#1A2C47');
     document.documentElement.style.setProperty('--orange', tweaks.accentColor);
-  }, [tweaks]);
+  }, [tweaks.navyColor, tweaks.accentColor]);
 
-  useEffect(() => {
-    window.addEventListener('message', (e) => {
-      if (e.data?.type === '__activate_edit_mode') setTweaksVisible(true);
-      if (e.data?.type === '__deactivate_edit_mode') setTweaksVisible(false);
-    });
-    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
-  }, []);
-
-  const pages = { Home: <HomePage setPage={setPage} tweaks={tweaks} />, Services: <ServicesPage setPage={setPage} tweaks={tweaks} />, 'About Us': <AboutPage setPage={setPage} tweaks={tweaks} />, Contact: <ContactPage tweaks={tweaks} /> };
+  const pages = {
+    Home:        <HomePage setPage={setPage} tweaks={tweaks} />,
+    Services:    <ServicesPage setPage={setPage} tweaks={tweaks} />,
+    'About Us':  <AboutPage setPage={setPage} tweaks={tweaks} />,
+    Contact:     <ContactPage tweaks={tweaks} />,
+  };
 
   return (
     <div style={{ background: tweaks.navyColor }}>
       <Navbar page={page} setPage={setPage} tweaks={tweaks} />
       <main>{pages[page]}</main>
       <Footer setPage={setPage} tweaks={tweaks} />
-      <TweaksPanel tweaks={tweaks} setTweaks={setTweaks} visible={tweaksVisible} />
     </div>
   );
 }
