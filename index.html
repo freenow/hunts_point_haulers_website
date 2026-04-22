@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hunts Point Haulers LLC — Interstate Freight Carrier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0B1425;
+    --navy-mid: #111E33;
+    --navy-light: #1A2C47;
+    --orange: #F26522;
+    --orange-dark: #C94E10;
+    --orange-glow: rgba(242,101,34,0.15);
+    --white: #F0EDE8;
+    --white-dim: rgba(240,237,232,0.65);
+    --white-faint: rgba(240,237,232,0.12);
+    --rule: rgba(240,237,232,0.08);
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,h2,h3,h4,h5 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    line-height: 1.05;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  ::selection { background: var(--orange); color: #fff; }
+  #root { min-height: 100vh; }
+</style>
+<template id="__bundler_thumbnail" data-bg-color="#0B1425">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#0B1425"/>
+    <!-- Nav bar -->
+    <rect x="0" y="0" width="1200" height="64" fill="#111E33"/>
+    <rect x="48" y="22" width="32" height="20" fill="#F26522" style="clip-path:polygon(0 0,85% 0,100% 100%,15% 100%)"/>
+    <rect x="90" y="26" width="120" height="10" rx="2" fill="#F0EDE8" opacity="0.8"/>
+    <!-- Orange bottom accent -->
+    <rect x="0" y="796" width="600" height="4" fill="#F26522"/>
+    <!-- Hero text blocks -->
+    <rect x="48" y="140" width="40" height="3" fill="#F26522"/>
+    <rect x="48" y="200" width="520" height="56" rx="2" fill="#F0EDE8" opacity="0.9"/>
+    <rect x="48" y="268" width="440" height="56" rx="2" fill="#F26522" opacity="0.95"/>
+    <rect x="48" y="344" width="380" height="12" rx="2" fill="#F0EDE8" opacity="0.35"/>
+    <rect x="48" y="364" width="320" height="12" rx="2" fill="#F0EDE8" opacity="0.25"/>
+    <!-- CTA buttons -->
+    <rect x="48" y="410" width="160" height="44" fill="#F26522"/>
+    <rect x="224" y="410" width="140" height="44" fill="transparent" stroke="#F26522" stroke-width="2"/>
+    <!-- Stats bar -->
+    <rect x="0" y="520" width="300" height="80" fill="#111E33" opacity="0.9"/>
+    <rect x="301" y="520" width="300" height="80" fill="#111E33" opacity="0.9"/>
+    <rect x="602" y="520" width="300" height="80" fill="#111E33" opacity="0.9"/>
+    <rect x="903" y="520" width="297" height="80" fill="#111E33" opacity="0.9"/>
+    <rect x="0" y="520" width="300" height="3" fill="#F26522"/>
+    <!-- Diagonal accent -->
+    <line x1="700" y1="0" x2="750" y2="800" stroke="#F26522" stroke-width="1" opacity="0.15"/>
+  </svg>
+</template>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accentColor": "#F26522",
+  "navyColor": "#0B1425",
+  "heroStyle": "diagonal"
+}/*EDITMODE-END*/;
+
+/* ─── PHOTO IMAGE COMPONENTS ─── */
+
+const PHOTOS = {
+  hero:      'uploads/hero-truck.jpg',
+  truck:     'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=1200&q=80',
+  highway:   'uploads/interstate-freight.jpg',
+  bridge:    'uploads/reefer-route.jpg',
+  warehouse: 'uploads/produce-market.jpg',
+  port:      'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1200&q=80',
+  fleet:     'https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=1200&q=80',
+  about:     'uploads/about-essence.jpg',
+};
+
+function getPhotoUrl(label) {
+  if (!label) return PHOTOS.highway;
+  if (label.includes('NYC SKYLINE AT DUSK')) return PHOTOS.hero;
+  if (label.includes('LOADING DOCK'))        return PHOTOS.truck;
+  if (label.includes('HIGHWAY'))             return PHOTOS.highway;
+  if (label.includes('BROOKLYN BRIDGE'))     return PHOTOS.bridge;
+  if (label.includes('HUNTS POINT FOOD'))    return PHOTOS.warehouse;
+  if (label.includes('PORT NEWARK'))         return PHOTOS.port;
+  if (label.includes('FLEET LINEUP'))        return PHOTOS.fleet;
+  if (label.includes('COMPANY FOUNDER'))     return PHOTOS.about;
+  return PHOTOS.highway;
+}
+
+function ImgPlaceholder({ label, width = '100%', height = 420, style = {} }) {
+  const h = typeof height === 'number' ? height : 420;
+  const isHero = label && label.includes('NYC SKYLINE AT DUSK');
+  const overlayBg = isHero
+    ? 'linear-gradient(105deg, rgba(11,20,37,0.92) 0%, rgba(11,20,37,0.6) 50%, rgba(11,20,37,0.3) 100%)'
+    : 'linear-gradient(to bottom, rgba(11,20,37,0.45) 0%, rgba(11,20,37,0.65) 100%)';
+  return (
+    <div style={{ position:'relative', width, height:h, overflow:'hidden', display:'block', flexShrink:0, ...style }}>
+      <img
+        src={getPhotoUrl(label)}
+        alt={label || ''}
+        style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', objectPosition:'center' }}
+      />
+      <div style={{ position:'absolute', inset:0, background: overlayBg }} />
+    </div>
+  );
+}
+/* ─── NAVBAR ─── */
+function Navbar({ page, setPage, tweaks }) {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  useEffect(() => {
+    const fn = () => setScrolled(window.scrollY > 40);
+    window.addEventListener('scroll', fn);
+    return () => window.removeEventListener('scroll', fn);
+  }, []);
+
+  const navStyle = {
+    position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
+    background: scrolled ? 'rgba(11,20,37,0.97)' : 'transparent',
+    backdropFilter: scrolled ? 'blur(12px)' : 'none',
+    borderBottom: scrolled ? '1px solid rgba(240,237,232,0.08)' : '1px solid transparent',
+    transition: 'all 0.3s ease',
+    padding: '0 40px',
+  };
+  const links = ['Home','Services','About Us','Contact'];
+
+  return (
+    <nav style={navStyle}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', display: 'flex', alignItems: 'center', height: 72, justifyContent: 'space-between' }}>
+        {/* Logo */}
+        <button onClick={() => { setPage('Home'); setMobileOpen(false); }} style={{ background:'none',border:'none',cursor:'pointer',display:'flex',alignItems:'center',gap:12 }}>
+          <div style={{ width:38, height:38, background: tweaks.accentColor, display:'flex',alignItems:'center',justifyContent:'center',clipPath:'polygon(0 0, 85% 0, 100% 100%, 15% 100%)' }}>
+            <span style={{ fontFamily:'Barlow Condensed',fontWeight:900,fontSize:18,color:'#fff',letterSpacing:'-0.02em' }}>H</span>
+          </div>
+          <div>
+            <div style={{ fontFamily:'Barlow Condensed',fontWeight:800,fontSize:20,color:'var(--white)',letterSpacing:'0.06em',textTransform:'uppercase',lineHeight:1 }}>Hunts Point</div>
+            <div style={{ fontFamily:'Barlow Condensed',fontWeight:600,fontSize:12,color: tweaks.accentColor,letterSpacing:'0.2em',textTransform:'uppercase',lineHeight:1,marginTop:2 }}>Haulers LLC</div>
+          </div>
+        </button>
+
+        {/* Desktop nav */}
+        <div style={{ display:'flex', gap:8, alignItems:'center' }}>
+          {links.map(l => (
+            <button key={l} onClick={() => setPage(l)} style={{
+              background: 'none', border: 'none', cursor: 'pointer',
+              fontFamily: 'Barlow Condensed', fontWeight: 700, fontSize: 15,
+              letterSpacing: '0.12em', textTransform: 'uppercase',
+              color: page === l ? tweaks.accentColor : 'var(--white)',
+              padding: '8px 16px',
+              borderBottom: page === l ? `2px solid ${tweaks.accentColor}` : '2px solid transparent',
+              transition: 'all 0.2s',
+            }}>{l}</button>
+          ))}
+          <button onClick={() => setPage('Contact')} style={{
+            marginLeft: 16, background: tweaks.accentColor, border: 'none', cursor: 'pointer',
+            fontFamily: 'Barlow Condensed', fontWeight: 800, fontSize: 14, letterSpacing: '0.15em',
+            textTransform: 'uppercase', color: '#fff', padding: '10px 24px',
+            clipPath: 'polygon(0 0, 95% 0, 100% 100%, 5% 100%)',
+            transition: 'all 0.2s',
+          }}>Get a Quote</button>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+/* ─── FOOTER ─── */
+function Footer({ setPage, tweaks }) {
+  return (
+    <footer style={{ background: '#070E1A', borderTop: '1px solid var(--rule)', padding: '64px 40px 32px' }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: 48, marginBottom: 48 }}>
+          <div>
+            <div style={{ fontFamily:'Barlow Condensed',fontWeight:800,fontSize:24,color:'var(--white)',letterSpacing:'0.06em',textTransform:'uppercase',marginBottom:6 }}>Hunts Point Haulers LLC</div>
+            <div style={{ fontFamily:'Barlow Condensed',fontWeight:600,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.18em',textTransform:'uppercase',marginBottom:16 }}>Interstate Freight Carrier · Bogota, NJ</div>
+            <p style={{ color:'var(--white-dim)',fontSize:14,lineHeight:1.7,maxWidth:280 }}>Reliable interstate freight and NYC metro delivery services. Specialists in Hunts Point Food Distribution and port-access logistics.</p>
+          </div>
+          {[
+            { title:'Services', items:['Interstate Freight','NYC Metro Delivery','Produce & Reefer','Port-Access Routes'] },
+            { title:'Company', items:['About Us','Our Team','Careers','News'] },
+            { title:'Contact', items:['(201) 555-0182','dispatch@hphaulers.com','Bogota, NJ 07603','24/7 Dispatch'] },
+          ].map(col => (
+            <div key={col.title}>
+              <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.2em',textTransform:'uppercase',marginBottom:16 }}>{col.title}</div>
+              {col.items.map(item => (
+                <div key={item} style={{ color:'var(--white-dim)',fontSize:14,lineHeight:1,marginBottom:10 }}>{item}</div>
+              ))}
+            </div>
+          ))}
+        </div>
+        <div style={{ borderTop:'1px solid var(--rule)', paddingTop:24, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+          <div style={{ color:'rgba(240,237,232,0.3)',fontSize:12,letterSpacing:'0.05em' }}>© 2026 Hunts Point Haulers LLC. All rights reserved. MC# 000000 · DOT# 000000</div>
+          <div style={{ display:'flex',gap:24 }}>
+            {['Privacy Policy','Terms of Service'].map(t => (
+              <span key={t} style={{ color:'rgba(240,237,232,0.3)',fontSize:12,letterSpacing:'0.05em',cursor:'pointer' }}>{t}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* ─── HOME PAGE ─── */
+function HomePage({ setPage, tweaks }) {
+  const [formData, setFormData] = useState({ name:'',email:'',phone:'',origin:'',dest:'',freight:'' });
+  const [submitted, setSubmitted] = useState(false);
+
+  const stats = [
+    { val:'15+', label:'Years Operating' },
+    { val:'48', label:'States Licensed' },
+    { val:'500K+', label:'Miles Annually' },
+    { val:'24/7', label:'Dispatch Support' },
+  ];
+
+  const services = [
+    { icon:'⬛', title:'Interstate Freight', desc:'Full truckload and LTL services across all 48 continental states. FMCSA licensed, fully insured.' },
+    { icon:'⬛', title:'NYC Metro Delivery', desc:'Deep experience navigating NYC\'s complex logistics — permits, routes, timing, and compliance.' },
+    { icon:'⬛', title:'Produce & Reefer', desc:'Temperature-controlled transport for perishables. Hunts Point Food Distribution specialists.' },
+    { icon:'⬛', title:'Port-Access Routes', desc:'NJ/NY port runs including Port Newark, Port Elizabeth, and Red Hook terminals.' },
+  ];
+
+  return (
+    <div>
+      {/* HERO */}
+      <div style={{ position:'relative', minHeight:'100vh', display:'flex', alignItems:'center', overflow:'hidden' }}>
+        {/* BG */}
+        <div style={{ position:'absolute',inset:0,zIndex:0 }}>
+          <ImgPlaceholder label="NYC SKYLINE AT DUSK / HIGHWAY INTERCHANGE" height="100%" style={{ position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover' }} />
+          <div style={{ position:'absolute',inset:0,background:`linear-gradient(105deg, ${tweaks.navyColor} 0%, ${tweaks.navyColor}cc 40%, transparent 100%)` }} />
+          <div style={{ position:'absolute',inset:0,background:'linear-gradient(to top, rgba(11,20,37,0.95) 0%, transparent 60%)' }} />
+        </div>
+
+        {/* Diagonal accent */}
+        <div style={{ position:'absolute',right:0,top:0,bottom:0,width:'55%',zIndex:0,
+          background:`linear-gradient(105deg, transparent 35%, rgba(242,101,34,0.03) 100%)`,
+          borderLeft:`3px solid ${tweaks.accentColor}22`
+        }} />
+
+        {/* Orange slash */}
+        <div style={{ position:'absolute',left:0,bottom:0,right:0,height:4,background:`linear-gradient(90deg, ${tweaks.accentColor}, transparent)`,zIndex:2 }} />
+
+        <div style={{ position:'relative',zIndex:1,maxWidth:1280,margin:'0 auto',padding:'120px 40px 80px',width:'100%' }}>
+          <div style={{ maxWidth:780 }}>
+            {/* Eyebrow */}
+            <div style={{ display:'flex',alignItems:'center',gap:12,marginBottom:32 }}>
+              <div style={{ width:40,height:2,background:tweaks.accentColor }} />
+              <span style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.3em',textTransform:'uppercase' }}>Interstate Freight Carrier · Est. 2009</span>
+            </div>
+
+            <h1 style={{ fontSize:'clamp(52px,8vw,96px)',color:'var(--white)',marginBottom:8,lineHeight:0.95 }}>
+              MOVING FREIGHT.
+            </h1>
+            <h1 style={{ fontSize:'clamp(52px,8vw,96px)',color:tweaks.accentColor,marginBottom:32,lineHeight:0.95 }}>
+              DELIVERING TRUST.
+            </h1>
+
+            <p style={{ fontSize:18,color:'var(--white-dim)',maxWidth:520,lineHeight:1.7,marginBottom:48,fontWeight:400 }}>
+              Bogota, NJ-based interstate carrier with deep NYC metro expertise. From the Hunts Point Food Distribution Center to every major port — we move what matters, on time, every time.
+            </p>
+
+            <div style={{ display:'flex',gap:16,flexWrap:'wrap' }}>
+              <button onClick={() => setPage('Contact')} style={{
+                background:tweaks.accentColor, border:'none', cursor:'pointer',
+                fontFamily:'Barlow Condensed',fontWeight:800,fontSize:16,letterSpacing:'0.15em',
+                textTransform:'uppercase', color:'#fff', padding:'18px 40px',
+                clipPath:'polygon(0 0, 96% 0, 100% 100%, 4% 100%)',
+                transition:'all 0.2s',
+              }}>Request a Quote</button>
+              <button onClick={() => setPage('Services')} style={{
+                background:'transparent', border:`2px solid ${tweaks.accentColor}66`, cursor:'pointer',
+                fontFamily:'Barlow Condensed',fontWeight:700,fontSize:16,letterSpacing:'0.15em',
+                textTransform:'uppercase', color:'var(--white)', padding:'18px 40px',
+                transition:'all 0.2s',
+              }}>Our Services →</button>
+            </div>
+          </div>
+
+          {/* Stats bar */}
+          <div style={{ marginTop:80, display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:1, background:'var(--rule)' }}>
+            {stats.map((s,i) => (
+              <div key={i} style={{ background:'rgba(11,20,37,0.85)',backdropFilter:'blur(8px)',padding:'24px 28px',borderTop:`2px solid ${i===0?tweaks.accentColor:'transparent'}` }}>
+                <div style={{ fontFamily:'Barlow Condensed',fontWeight:900,fontSize:40,color:i===0?tweaks.accentColor:'var(--white)',lineHeight:1 }}>{s.val}</div>
+                <div style={{ fontFamily:'Barlow Condensed',fontWeight:600,fontSize:12,color:'var(--white-dim)',letterSpacing:'0.15em',textTransform:'uppercase',marginTop:4 }}>{s.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* SERVICES STRIP */}
+      <div style={{ background:'var(--navy-mid)',borderTop:`1px solid ${tweaks.accentColor}22`,borderBottom:'1px solid var(--rule)',padding:'80px 40px' }}>
+        <div style={{ maxWidth:1280,margin:'0 auto' }}>
+          <div style={{ display:'flex',alignItems:'flex-end',justifyContent:'space-between',marginBottom:56 }}>
+            <div>
+              <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.25em',textTransform:'uppercase',marginBottom:12 }}>What We Do</div>
+              <h2 style={{ fontSize:48,color:'var(--white)' }}>CORE SERVICES</h2>
+            </div>
+            <button onClick={() => setPage('Services')} style={{ background:'none',border:`1px solid ${tweaks.accentColor}`,color:tweaks.accentColor,fontFamily:'Barlow Condensed',fontWeight:700,fontSize:13,letterSpacing:'0.15em',textTransform:'uppercase',padding:'12px 28px',cursor:'pointer' }}>View All Services →</button>
+          </div>
+          <div style={{ display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:2 }}>
+            {services.map((s,i) => (
+              <ServiceCard key={i} s={s} i={i} tweaks={tweaks} />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* WHY US */}
+      <div style={{ padding:'100px 40px',background:tweaks.navyColor }}>
+        <div style={{ maxWidth:1280,margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 1fr',gap:80,alignItems:'center' }}>
+          <div>
+            <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.25em',textTransform:'uppercase',marginBottom:12 }}>Why Choose Us</div>
+            <h2 style={{ fontSize:52,color:'var(--white)',marginBottom:24 }}>BUILT FOR NYC FREIGHT</h2>
+            <p style={{ color:'var(--white-dim)',fontSize:16,lineHeight:1.8,marginBottom:40 }}>
+              Operating in and out of New York City requires more than a truck and a license. It demands knowledge of every restricted route, every permit requirement, every delivery window at every major distribution hub. We've built that knowledge over 15 years.
+            </p>
+            {[
+              'Hunts Point Food Distribution Center specialists',
+              'NYC-permitted vehicles, all boroughs',
+              'Port Newark & Port Elizabeth access',
+              'FMCSA-compliant, fully insured operations',
+              'Owner-operated reliability — no brokering your load',
+            ].map((item,i) => (
+              <div key={i} style={{ display:'flex',alignItems:'center',gap:16,marginBottom:16 }}>
+                <div style={{ width:6,height:6,background:tweaks.accentColor,flexShrink:0,transform:'rotate(45deg)' }} />
+                <span style={{ color:'var(--white)',fontSize:15 }}>{item}</span>
+              </div>
+            ))}
+            <button onClick={() => setPage('About Us')} style={{ marginTop:32,background:'none',border:`2px solid ${tweaks.accentColor}`,color:tweaks.accentColor,fontFamily:'Barlow Condensed',fontWeight:700,fontSize:14,letterSpacing:'0.15em',textTransform:'uppercase',padding:'14px 32px',cursor:'pointer' }}>About the Company →</button>
+          </div>
+          <div style={{ position:'relative' }}>
+            <ImgPlaceholder label="PROFESSIONAL FREIGHT TRUCK / LOADING DOCK" height={480} style={{ width:'100%' }} />
+            <div style={{ position:'absolute',bottom:-2,left:-2,right:-2,height:4,background:`linear-gradient(90deg, ${tweaks.accentColor}, transparent)` }} />
+            <div style={{ position:'absolute',top:-2,left:-2,width:4,height:'40%',background:tweaks.accentColor }} />
+          </div>
+        </div>
+      </div>
+
+      {/* CTA BANNER */}
+      <div style={{ background:tweaks.accentColor,padding:'64px 40px',position:'relative',overflow:'hidden' }}>
+        <div style={{ position:'absolute',right:-40,top:-40,width:300,height:300,background:'rgba(0,0,0,0.1)',borderRadius:'50%' }} />
+        <div style={{ maxWidth:1280,margin:'0 auto',display:'flex',alignItems:'center',justifyContent:'space-between',position:'relative',zIndex:1 }}>
+          <div>
+            <h2 style={{ fontSize:48,color:'#fff',marginBottom:8 }}>READY TO MOVE YOUR FREIGHT?</h2>
+            <p style={{ color:'rgba(255,255,255,0.8)',fontSize:16 }}>Get a competitive quote within 2 hours. Available 24/7 for time-sensitive loads.</p>
+          </div>
+          <div style={{ display:'flex',gap:16,flexShrink:0,marginLeft:40 }}>
+            <a href="tel:2015550182" style={{ background:'#fff',color:tweaks.accentColor,fontFamily:'Barlow Condensed',fontWeight:800,fontSize:16,letterSpacing:'0.1em',textTransform:'uppercase',padding:'18px 36px',textDecoration:'none',display:'block' }}>(201) 555-0182</a>
+            <button onClick={() => setPage('Contact')} style={{ background:'rgba(0,0,0,0.2)',border:'2px solid #fff',color:'#fff',fontFamily:'Barlow Condensed',fontWeight:800,fontSize:16,letterSpacing:'0.1em',textTransform:'uppercase',padding:'18px 36px',cursor:'pointer' }}>Request Quote</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ServiceCard({ s, i, tweaks }) {
+  const [hov, setHov] = useState(false);
+  const icons = ['🛣', '🌉', '❄', '⚓'];
+  return (
+    <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)} style={{
+      background: hov ? 'var(--navy-light)' : tweaks.navyColor,
+      padding: '40px 32px',
+      borderTop: `3px solid ${hov ? tweaks.accentColor : 'var(--rule)'}`,
+      transition: 'all 0.25s',
+      cursor: 'default',
+    }}>
+      <div style={{ fontSize:28,marginBottom:20,filter:'grayscale(1)',opacity:0.7 }}>{icons[i]}</div>
+      <h3 style={{ fontFamily:'Barlow Condensed',fontWeight:800,fontSize:22,color:'var(--white)',textTransform:'uppercase',letterSpacing:'0.04em',marginBottom:12 }}>{s.title}</h3>
+      <p style={{ color:'var(--white-dim)',fontSize:14,lineHeight:1.7 }}>{s.desc}</p>
+      {hov && <div style={{ marginTop:20,fontFamily:'Barlow Condensed',fontWeight:700,fontSize:12,color:tweaks.accentColor,letterSpacing:'0.2em',textTransform:'uppercase' }}>LEARN MORE →</div>}
+    </div>
+  );
+}
+
+/* ─── SERVICES PAGE ─── */
+function ServicesPage({ setPage, tweaks }) {
+  const services = [
+    {
+      title: 'Interstate Freight',
+      tag: '48-State Licensed',
+      desc: 'Full truckload (FTL) and less-than-truckload (LTL) service across all 48 continental states. Whether you\'re moving a full trailer or need to share capacity, we offer competitive rates and proven reliability. Our drivers are experienced in long-haul routes through urban and rural corridors alike.',
+      specs: ['Up to 45,000 lbs capacity','Step deck & flatbed available','Real-time load tracking','FMCSA-licensed carrier'],
+      img: 'HIGHWAY INTERSTATE / TRUCK CONVOY',
+    },
+    {
+      title: 'NYC Metro Deliveries',
+      tag: 'All 5 Boroughs + Tri-State',
+      desc: 'New York City is among the most demanding freight environments in North America. We know the overnight windows, the permit requirements, the restricted routes in Manhattan, the loading dock protocols at every major distribution center in the five boroughs and surrounding metro.',
+      specs: ['Manhattan overnight permits','All-borough delivery capability','Time-window precision','Knowledge of every hub'],
+      img: 'NYC SKYLINE / BROOKLYN BRIDGE / FREIGHT TRUCK',
+    },
+    {
+      title: 'Produce & Reefer Transport',
+      tag: 'Hunts Point Specialists',
+      desc: 'Temperature-controlled transport is a specialized discipline. We run regular lanes to and from the Hunts Point Food Distribution Center — the largest food distribution hub in the world — with refrigerated trailers maintained to strict FDA/FSMA standards. Your perishables arrive cold, on time, and compliant.',
+      specs: ['Continuous temp monitoring','FDA/FSMA compliance','Hunts Point lane expertise','Pre-cooled units on request'],
+      img: 'HUNTS POINT FOOD DISTRIBUTION / REEFER TRAILER',
+    },
+    {
+      title: 'Port-Access Routes',
+      tag: 'NJ & NY Terminals',
+      desc: 'Container drayage and port pickup/delivery across New York and New Jersey\'s busiest marine terminals. Port Newark–Elizabeth, Red Hook Container Terminal, and Staten Island — we move containers efficiently with knowledge of terminal appointments, chassis requirements, and customs clearance protocols.',
+      specs: ['Port Newark–Elizabeth','Red Hook Terminal','Staten Island Terminal','Chassis & container drayage'],
+      img: 'PORT NEWARK / SHIPPING CONTAINERS / CRANES',
+    },
+  ];
+
+  return (
+    <div>
+      {/* Header */}
+      <div style={{ background:'var(--navy-mid)',padding:'140px 40px 80px',borderBottom:`3px solid ${tweaks.accentColor}` }}>
+        <div style={{ maxWidth:1280,margin:'0 auto' }}>
+          <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.25em',textTransform:'uppercase',marginBottom:12 }}>What We Carry</div>
+          <h1 style={{ fontSize:72,color:'var(--white)',marginBottom:20 }}>OUR SERVICES</h1>
+          <p style={{ color:'var(--white-dim)',fontSize:18,maxWidth:600,lineHeight:1.7 }}>Purpose-built for the demands of the NYC freight corridor. Every service we offer is backed by hands-on operational experience.</p>
+        </div>
+      </div>
+
+      {/* Services */}
+      <div style={{ padding:'0 40px 100px',background:tweaks.navyColor }}>
+        <div style={{ maxWidth:1280,margin:'0 auto' }}>
+          {services.map((s,i) => (
+            <div key={i} style={{
+              display:'grid',
+              gridTemplateColumns: i%2===0 ? '1fr 1fr' : '1fr 1fr',
+              gap:0,
+              borderBottom:'1px solid var(--rule)',
+              padding:'80px 0',
+            }}>
+              <div style={{ order: i%2===0 ? 1 : 2, padding: i%2===0 ? '0 64px 0 0' : '0 0 0 64px' }}>
+                <div style={{ display:'flex',alignItems:'center',gap:12,marginBottom:24 }}>
+                  <span style={{ background:tweaks.accentColor,color:'#fff',fontFamily:'Barlow Condensed',fontWeight:700,fontSize:11,letterSpacing:'0.2em',textTransform:'uppercase',padding:'4px 12px' }}>{s.tag}</span>
+                </div>
+                <h2 style={{ fontSize:48,color:'var(--white)',marginBottom:20 }}>{s.title.toUpperCase()}</h2>
+                <p style={{ color:'var(--white-dim)',fontSize:15,lineHeight:1.8,marginBottom:32 }}>{s.desc}</p>
+                <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:10 }}>
+                  {s.specs.map((spec,j) => (
+                    <div key={j} style={{ display:'flex',alignItems:'center',gap:10 }}>
+                      <div style={{ width:5,height:5,background:tweaks.accentColor,transform:'rotate(45deg)',flexShrink:0 }} />
+                      <span style={{ color:'var(--white)',fontSize:13,fontWeight:500 }}>{spec}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div style={{ order: i%2===0 ? 2 : 1,position:'relative' }}>
+                <ImgPlaceholder label={s.img} height={340} style={{ width:'100%' }} />
+                <div style={{ position:'absolute',bottom:0,left:0,width:'100%',height:3,background:`linear-gradient(90deg, ${tweaks.accentColor}, transparent)` }} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div style={{ background:tweaks.accentColor,padding:'60px 40px' }}>
+        <div style={{ maxWidth:1280,margin:'0 auto',textAlign:'center' }}>
+          <h2 style={{ fontSize:48,color:'#fff',marginBottom:16 }}>NEED A CUSTOM FREIGHT SOLUTION?</h2>
+          <p style={{ color:'rgba(255,255,255,0.85)',fontSize:16,marginBottom:32 }}>Our dispatch team is available 24/7 to discuss your specific requirements.</p>
+          <button onClick={() => setPage('Contact')} style={{ background:'#fff',color:tweaks.accentColor,border:'none',fontFamily:'Barlow Condensed',fontWeight:800,fontSize:16,letterSpacing:'0.15em',textTransform:'uppercase',padding:'18px 48px',cursor:'pointer' }}>Contact Our Team →</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── ABOUT PAGE ─── */
+function AboutPage({ setPage, tweaks }) {
+  const values = [
+    { title:'Reliability', desc:'A commitment that started on Day 1 and has never wavered. When we say we\'ll be there, we\'ll be there.' },
+    { title:'Expertise', desc:'15+ years moving freight in and out of the most demanding urban freight market in the country.' },
+    { title:'Transparency', desc:'No hidden fees, no lost loads, no excuses. You know where your freight is at all times.' },
+    { title:'Compliance', desc:'FMCSA-licensed. Fully insured. Every driver background-checked and HOS-compliant.' },
+  ];
+
+  return (
+    <div>
+      {/* Header */}
+      <div style={{ background:'var(--navy-mid)',padding:'140px 40px 80px',borderBottom:`3px solid ${tweaks.accentColor}`,position:'relative',overflow:'hidden' }}>
+        <div style={{ position:'absolute',right:0,top:0,width:'45%',height:'100%' }}>
+          <ImgPlaceholder label="COMPANY FOUNDER / FLEET PHOTO" height="100%" style={{ width:'100%',height:'100%' }} />
+          <div style={{ position:'absolute',inset:0,background:`linear-gradient(90deg, var(--navy-mid) 0%, transparent 60%)` }} />
+        </div>
+        <div style={{ maxWidth:1280,margin:'0 auto',position:'relative',zIndex:1 }}>
+          <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.25em',textTransform:'uppercase',marginBottom:12 }}>Our Story</div>
+          <h1 style={{ fontSize:72,color:'var(--white)',marginBottom:20 }}>ABOUT US</h1>
+          <p style={{ color:'var(--white-dim)',fontSize:18,maxWidth:560,lineHeight:1.7 }}>Founded in Bogota, NJ, by operators who grew up in the freight industry. We know this city, these roads, and this business.</p>
+        </div>
+      </div>
+
+      {/* Story section */}
+      <div style={{ padding:'100px 40px',background:tweaks.navyColor }}>
+        <div style={{ maxWidth:1280,margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 1fr',gap:80 }}>
+          <div>
+            <h2 style={{ fontSize:48,color:'var(--white)',marginBottom:32 }}>HUNTS POINT IS IN OUR DNA</h2>
+            <p style={{ color:'var(--white-dim)',fontSize:16,lineHeight:1.85,marginBottom:24 }}>
+              Hunts Point Haulers LLC was built around one conviction: the businesses that depend on the Hunts Point Food Distribution Center — and the broader NYC freight network — deserve a carrier that treats their loads like their own livelihood.
+            </p>
+            <p style={{ color:'var(--white-dim)',fontSize:16,lineHeight:1.85,marginBottom:24 }}>
+              We run dedicated lanes in and out of the Market daily. We know the gate procedures, the dock assignments, the inspector names, and the fastest legal routes for every window of every night. That institutional knowledge is our competitive advantage — and it's yours when you work with us.
+            </p>
+            <p style={{ color:'var(--white-dim)',fontSize:16,lineHeight:1.85 }}>
+              From a single truck to a growing fleet, every decision we've made has been in service of one goal: being the most reliable carrier in the NYC metro. That reputation is built load by load, delivery by delivery — and we don't take a single one for granted.
+            </p>
+          </div>
+          <div>
+            <div style={{ background:'var(--navy-mid)',padding:'40px',borderLeft:`3px solid ${tweaks.accentColor}`,marginBottom:32 }}>
+              <div style={{ fontFamily:'Barlow Condensed',fontWeight:900,fontSize:64,color:tweaks.accentColor,lineHeight:1 }}>2009</div>
+              <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:16,color:'var(--white)',marginTop:4 }}>Year Founded</div>
+              <div style={{ color:'var(--white-dim)',fontSize:14,marginTop:12,lineHeight:1.7 }}>Started with one truck and a commitment to show up on time, every time. That hasn't changed — only the fleet has grown.</div>
+            </div>
+            <ImgPlaceholder label="FLEET LINEUP / TRUCK YARD" height={260} style={{ width:'100%' }} />
+          </div>
+        </div>
+      </div>
+
+      {/* Values */}
+      <div style={{ background:'var(--navy-mid)',padding:'80px 40px',borderTop:'1px solid var(--rule)' }}>
+        <div style={{ maxWidth:1280,margin:'0 auto' }}>
+          <h2 style={{ fontSize:48,color:'var(--white)',marginBottom:48,textAlign:'center' }}>HOW WE OPERATE</h2>
+          <div style={{ display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:2 }}>
+            {values.map((v,i) => (
+              <div key={i} style={{ background:tweaks.navyColor,padding:'40px 32px',borderTop:`3px solid ${i===0?tweaks.accentColor:'var(--rule)'}` }}>
+                <div style={{ fontFamily:'Barlow Condensed',fontWeight:900,fontSize:52,color:`${tweaks.accentColor}22`,lineHeight:1,marginBottom:16 }}>0{i+1}</div>
+                <h3 style={{ fontFamily:'Barlow Condensed',fontWeight:800,fontSize:24,color:'var(--white)',marginBottom:12 }}>{v.title.toUpperCase()}</h3>
+                <p style={{ color:'var(--white-dim)',fontSize:14,lineHeight:1.7 }}>{v.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Credentials */}
+      <div style={{ padding:'80px 40px',background:tweaks.navyColor }}>
+        <div style={{ maxWidth:1280,margin:'0 auto' }}>
+          <h2 style={{ fontSize:48,color:'var(--white)',marginBottom:48,textAlign:'center' }}>CREDENTIALS & COMPLIANCE</h2>
+          <div style={{ display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:24 }}>
+            {[
+              { label:'FMCSA Authority', detail:'Active Motor Carrier Authority\nMC# 000000' },
+              { label:'USDOT Registered', detail:'United States DOT Number\nDOT# 000000' },
+              { label:'General Liability', detail:'$1M per occurrence\nFull cargo coverage' },
+              { label:'NJ State Licensed', detail:'Commercial Vehicle Operations\nAll weight classes' },
+              { label:'NYC Permitted', detail:'All borough permits current\nOversized available' },
+              { label:'FSMA Compliant', detail:'Food Safety Modernization Act\nSanitary transport rules' },
+            ].map((c,i) => (
+              <div key={i} style={{ background:'var(--navy-mid)',padding:'28px 32px',borderLeft:`3px solid ${tweaks.accentColor}44`,display:'flex',justifyContent:'space-between',alignItems:'center' }}>
+                <div>
+                  <div style={{ fontFamily:'Barlow Condensed',fontWeight:800,fontSize:18,color:'var(--white)',letterSpacing:'0.04em' }}>{c.label}</div>
+                  <div style={{ color:'var(--white-dim)',fontSize:13,marginTop:4,lineHeight:1.5,whiteSpace:'pre-line' }}>{c.detail}</div>
+                </div>
+                <div style={{ width:10,height:10,background:tweaks.accentColor,transform:'rotate(45deg)',flexShrink:0,marginLeft:24 }} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── CONTACT PAGE ─── */
+function ContactPage({ tweaks }) {
+  const [form, setForm] = useState({ name:'',company:'',email:'',phone:'',origin:'',dest:'',commodity:'',weight:'',date:'',notes:'' });
+  const [submitted, setSubmitted] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const e = {};
+    if (!form.name.trim()) e.name = 'Required';
+    if (!form.email.trim() || !/\S+@\S+\.\S+/.test(form.email)) e.email = 'Valid email required';
+    if (!form.phone.trim()) e.phone = 'Required';
+    if (!form.origin.trim()) e.origin = 'Required';
+    if (!form.dest.trim()) e.dest = 'Required';
+    return e;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const errs = validate();
+    if (Object.keys(errs).length) { setErrors(errs); return; }
+    setSubmitted(true);
+  };
+
+  const inputStyle = (field) => ({
+    width:'100%', background:'var(--navy)',border:`1px solid ${errors[field]?tweaks.accentColor:'var(--rule)'}`,
+    color:'var(--white)', fontFamily:'Barlow',fontSize:14, padding:'14px 16px',
+    outline:'none', transition:'border 0.2s',
+  });
+
+  const labelStyle = { fontFamily:'Barlow Condensed',fontWeight:700,fontSize:12,color:'var(--white-dim)',letterSpacing:'0.15em',textTransform:'uppercase',display:'block',marginBottom:6 };
+
+  if (submitted) return (
+    <div style={{ minHeight:'100vh',display:'flex',alignItems:'center',justifyContent:'center',background:tweaks.navyColor,padding:'40px',paddingTop:100 }}>
+      <div style={{ textAlign:'center',maxWidth:560 }}>
+        <div style={{ width:72,height:72,background:tweaks.accentColor,margin:'0 auto 32px',display:'flex',alignItems:'center',justifyContent:'center',clipPath:'polygon(0 0, 85% 0, 100% 100%, 15% 100%)' }}>
+          <span style={{ fontSize:32,color:'#fff' }}>✓</span>
+        </div>
+        <h2 style={{ fontFamily:'Barlow Condensed',fontWeight:900,fontSize:48,color:'var(--white)',marginBottom:16 }}>QUOTE REQUEST RECEIVED</h2>
+        <p style={{ color:'var(--white-dim)',fontSize:16,lineHeight:1.7,marginBottom:32 }}>Our dispatch team will review your request and contact you within 2 hours. For urgent loads, call us directly at <strong style={{ color:'var(--white)'}}>(201) 555-0182</strong>.</p>
+        <button onClick={() => setSubmitted(false)} style={{ background:tweaks.accentColor,border:'none',color:'#fff',fontFamily:'Barlow Condensed',fontWeight:800,fontSize:14,letterSpacing:'0.15em',textTransform:'uppercase',padding:'14px 36px',cursor:'pointer' }}>Submit Another Request</button>
+      </div>
+    </div>
+  );
+
+  return (
+    <div>
+      {/* Header */}
+      <div style={{ background:'var(--navy-mid)',padding:'140px 40px 80px',borderBottom:`3px solid ${tweaks.accentColor}` }}>
+        <div style={{ maxWidth:1280,margin:'0 auto' }}>
+          <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.25em',textTransform:'uppercase',marginBottom:12 }}>Get in Touch</div>
+          <h1 style={{ fontSize:72,color:'var(--white)',marginBottom:20 }}>CONTACT US</h1>
+          <p style={{ color:'var(--white-dim)',fontSize:18,maxWidth:520 }}>For quotes, dispatch, or general inquiries. We respond within 2 hours during business hours, and 24/7 for time-sensitive loads.</p>
+        </div>
+      </div>
+
+      <div style={{ padding:'80px 40px',background:tweaks.navyColor }}>
+        <div style={{ maxWidth:1280,margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 2fr',gap:80 }}>
+
+          {/* Contact info */}
+          <div>
+            <div style={{ marginBottom:48 }}>
+              <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:12,color:tweaks.accentColor,letterSpacing:'0.2em',textTransform:'uppercase',marginBottom:6 }}>Phone</div>
+              <div style={{ fontFamily:'Barlow Condensed',fontWeight:800,fontSize:28,color:'var(--white)' }}>(201) 555-0182</div>
+              <div style={{ color:'var(--white-dim)',fontSize:13,marginTop:4 }}>24/7 Dispatch Available</div>
+            </div>
+            <div style={{ marginBottom:48 }}>
+              <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:12,color:tweaks.accentColor,letterSpacing:'0.2em',textTransform:'uppercase',marginBottom:6 }}>Email</div>
+              <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:20,color:'var(--white)' }}>dispatch@hphaulers.com</div>
+              <div style={{ color:'var(--white-dim)',fontSize:13,marginTop:4 }}>Quotes: quotes@hphaulers.com</div>
+            </div>
+            <div style={{ marginBottom:48 }}>
+              <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:12,color:tweaks.accentColor,letterSpacing:'0.2em',textTransform:'uppercase',marginBottom:6 }}>Office</div>
+              <div style={{ color:'var(--white)',fontSize:16,lineHeight:1.7 }}>Bogota, NJ 07603<br/>Bergen County, New Jersey</div>
+            </div>
+            <div style={{ background:'var(--navy-mid)',padding:'28px',borderLeft:`3px solid ${tweaks.accentColor}` }}>
+              <div style={{ fontFamily:'Barlow Condensed',fontWeight:800,fontSize:18,color:'var(--white)',marginBottom:8 }}>HOURS OF OPERATION</div>
+              <div style={{ color:'var(--white-dim)',fontSize:14,lineHeight:2 }}>
+                Mon–Fri: 6:00 AM – 8:00 PM<br/>
+                Saturday: 7:00 AM – 4:00 PM<br/>
+                Sunday: Emergency dispatch only<br/>
+                <span style={{ color:tweaks.accentColor,fontWeight:600 }}>24/7 Emergency: (201) 555-0199</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Quote form */}
+          <div>
+            <div style={{ fontFamily:'Barlow Condensed',fontWeight:800,fontSize:32,color:'var(--white)',marginBottom:8 }}>REQUEST A FREIGHT QUOTE</div>
+            <div style={{ width:48,height:3,background:tweaks.accentColor,marginBottom:36 }} />
+            <form onSubmit={handleSubmit}>
+              <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:20,marginBottom:20 }}>
+                {[
+                  { field:'name',label:'Full Name *',placeholder:'John Smith' },
+                  { field:'company',label:'Company',placeholder:'Acme Distributors Inc.' },
+                  { field:'email',label:'Email Address *',placeholder:'john@company.com',type:'email' },
+                  { field:'phone',label:'Phone Number *',placeholder:'(201) 555-0000' },
+                ].map(({ field, label, placeholder, type='text' }) => (
+                  <div key={field}>
+                    <label style={labelStyle}>{label}</label>
+                    <input type={type} placeholder={placeholder} value={form[field]}
+                      onChange={e => { setForm({...form,[field]:e.target.value}); setErrors({...errors,[field]:''}); }}
+                      style={inputStyle(field)} />
+                    {errors[field] && <div style={{ color:tweaks.accentColor,fontSize:11,marginTop:4 }}>{errors[field]}</div>}
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:20,marginBottom:20 }}>
+                {[
+                  { field:'origin',label:'Origin City / State *',placeholder:'Philadelphia, PA' },
+                  { field:'dest',label:'Destination City / State *',placeholder:'Hunts Point, Bronx NY' },
+                  { field:'commodity',label:'Commodity / Freight Type',placeholder:'Produce, dry goods, etc.' },
+                  { field:'weight',label:'Estimated Weight',placeholder:'20,000 lbs' },
+                ].map(({ field, label, placeholder }) => (
+                  <div key={field}>
+                    <label style={labelStyle}>{label}</label>
+                    <input type="text" placeholder={placeholder} value={form[field]}
+                      onChange={e => { setForm({...form,[field]:e.target.value}); setErrors({...errors,[field]:''}); }}
+                      style={inputStyle(field)} />
+                    {errors[field] && <div style={{ color:tweaks.accentColor,fontSize:11,marginTop:4 }}>{errors[field]}</div>}
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ marginBottom:20 }}>
+                <label style={labelStyle}>Requested Pickup Date</label>
+                <input type="date" value={form.date} onChange={e => setForm({...form,date:e.target.value})} style={{ ...inputStyle('date'),colorScheme:'dark' }} />
+              </div>
+
+              <div style={{ marginBottom:32 }}>
+                <label style={labelStyle}>Additional Notes</label>
+                <textarea placeholder="Special requirements, loading dock info, temperature requirements, time windows..." value={form.notes}
+                  onChange={e => setForm({...form,notes:e.target.value})}
+                  style={{ ...inputStyle('notes'),resize:'vertical',minHeight:100 }} />
+              </div>
+
+              <button type="submit" style={{
+                background:tweaks.accentColor,border:'none',cursor:'pointer',
+                fontFamily:'Barlow Condensed',fontWeight:800,fontSize:16,letterSpacing:'0.15em',
+                textTransform:'uppercase',color:'#fff',padding:'18px 48px',
+                clipPath:'polygon(0 0, 97% 0, 100% 100%, 3% 100%)',
+                transition:'all 0.2s',
+              }}>Submit Quote Request →</button>
+              <div style={{ color:'var(--white-dim)',fontSize:12,marginTop:12 }}>We respond within 2 business hours. All information is kept strictly confidential.</div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── TWEAKS PANEL ─── */
+function TweaksPanel({ tweaks, setTweaks, visible }) {
+  if (!visible) return null;
+  const update = (key, val) => {
+    const next = { ...tweaks, [key]: val };
+    setTweaks(next);
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits: next }, '*');
+  };
+  return (
+    <div style={{ position:'fixed',bottom:24,right:24,zIndex:9999,background:'#0d1a2e',border:'1px solid rgba(240,237,232,0.15)',boxShadow:'0 20px 60px rgba(0,0,0,0.6)',padding:'24px',width:280,borderTop:`3px solid ${tweaks.accentColor}` }}>
+      <div style={{ fontFamily:'Barlow Condensed',fontWeight:800,fontSize:14,color:'var(--white)',letterSpacing:'0.15em',textTransform:'uppercase',marginBottom:20 }}>Tweaks</div>
+      <div style={{ marginBottom:20 }}>
+        <label style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:11,color:'var(--white-dim)',letterSpacing:'0.15em',textTransform:'uppercase',display:'block',marginBottom:8 }}>Accent Color</label>
+        <div style={{ display:'flex',gap:8,flexWrap:'wrap' }}>
+          {['#F26522','#E8B31A','#E82F37','#2F9EE8','#27AE7B'].map(c => (
+            <button key={c} onClick={() => update('accentColor',c)} style={{ width:28,height:28,background:c,border:tweaks.accentColor===c?'2px solid #fff':'2px solid transparent',cursor:'pointer',borderRadius:2 }} />
+          ))}
+        </div>
+      </div>
+      <div style={{ marginBottom:20 }}>
+        <label style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:11,color:'var(--white-dim)',letterSpacing:'0.15em',textTransform:'uppercase',display:'block',marginBottom:8 }}>Background Tone</label>
+        <div style={{ display:'flex',gap:8 }}>
+          {[['#0B1425','Navy'],['#0F1510','Forest'],['#1A0F0A','Espresso'],['#0A0A14','Onyx']].map(([c,l]) => (
+            <button key={c} onClick={() => update('navyColor',c)} style={{ background:c,border:tweaks.navyColor===c?`2px solid ${tweaks.accentColor}`:'2px solid rgba(255,255,255,0.15)',color:'rgba(255,255,255,0.6)',fontFamily:'Barlow Condensed',fontSize:11,letterSpacing:'0.08em',padding:'6px 10px',cursor:'pointer' }}>{l}</button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── APP ─── */
+function App() {
+  const [page, setPage] = useState(() => localStorage.getItem('hph_page') || 'Home');
+  const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
+  const [tweaksVisible, setTweaksVisible] = useState(false);
+
+  useEffect(() => {
+    localStorage.setItem('hph_page', page);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [page]);
+
+  // Apply tweaks to CSS variables
+  useEffect(() => {
+    document.documentElement.style.setProperty('--navy', tweaks.navyColor);
+    document.documentElement.style.setProperty('--navy-mid', tweaks.navyColor === '#0B1425' ? '#111E33' : tweaks.navyColor + 'cc');
+    document.documentElement.style.setProperty('--navy-light', '#1A2C47');
+    document.documentElement.style.setProperty('--orange', tweaks.accentColor);
+  }, [tweaks]);
+
+  useEffect(() => {
+    window.addEventListener('message', (e) => {
+      if (e.data?.type === '__activate_edit_mode') setTweaksVisible(true);
+      if (e.data?.type === '__deactivate_edit_mode') setTweaksVisible(false);
+    });
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+  }, []);
+
+  const pages = { Home: <HomePage setPage={setPage} tweaks={tweaks} />, Services: <ServicesPage setPage={setPage} tweaks={tweaks} />, 'About Us': <AboutPage setPage={setPage} tweaks={tweaks} />, Contact: <ContactPage tweaks={tweaks} /> };
+
+  return (
+    <div style={{ background: tweaks.navyColor }}>
+      <Navbar page={page} setPage={setPage} tweaks={tweaks} />
+      <main>{pages[page]}</main>
+      <Footer setPage={setPage} tweaks={tweaks} />
+      <TweaksPanel tweaks={tweaks} setTweaks={setTweaks} visible={tweaksVisible} />
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
