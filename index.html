@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Hunts Point Haulers LLC — Interstate Freight Carrier</title>
+<title>Hunts Point Haulers LLC — Tri-State Freight Carrier</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
@@ -273,8 +273,8 @@ function Footer({ setPage, tweaks }) {
         <div className="r-footer-grid" style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr', gap: 48, marginBottom: 48 }}>
           <div>
             <div style={{ fontFamily:'Barlow Condensed',fontWeight:800,fontSize:24,color:'var(--white)',letterSpacing:'0.06em',textTransform:'uppercase',marginBottom:6 }}>Hunts Point Haulers LLC</div>
-            <div style={{ fontFamily:'Barlow Condensed',fontWeight:600,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.18em',textTransform:'uppercase',marginBottom:16 }}>Interstate Freight Carrier · Bogota, NJ</div>
-            <p style={{ color:'var(--white-dim)',fontSize:14,lineHeight:1.7,maxWidth:280 }}>Reliable interstate freight and NYC metro delivery services. Specialists in Hunts Point Food Distribution and port-access logistics.</p>
+            <div style={{ fontFamily:'Barlow Condensed',fontWeight:600,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.18em',textTransform:'uppercase',marginBottom:16 }}>Tri-State Freight Carrier</div>
+            <p style={{ color:'var(--white-dim)',fontSize:14,lineHeight:1.7,maxWidth:280 }}>Reliable interstate freight and NYC metro delivery. Specialists in produce transportation — door to door, shipper to dock, 24/7/365.</p>
           </div>
 
           <div>
@@ -293,15 +293,16 @@ function Footer({ setPage, tweaks }) {
 
           <div>
             <div style={colTitle}>Contact</div>
-            <a href="tel:2015550182" style={{ ...linkStyle, textDecoration:'none' }}>(201) 555-0182</a>
-            <a href="mailto:dispatch@huntspointshaulers.com" style={{ ...linkStyle, textDecoration:'none' }}>dispatch@huntspointshaulers.com</a>
-            <div style={{ color:'var(--white-dim)',fontSize:14,lineHeight:1,marginBottom:12 }}>Bogota, NJ 07603</div>
-            <div style={{ color:'var(--white-dim)',fontSize:14,lineHeight:1 }}>24/7 Dispatch</div>
+            <a href="tel:2019082622" style={{ ...linkStyle, textDecoration:'none' }}>(201) 908-2622</a>
+            <a href="mailto:Dispatch@huntspointhaulers.com" style={{ ...linkStyle, textDecoration:'none' }}>Dispatch@huntspointhaulers.com</a>
+            <a href="mailto:Accounting@huntspointhaulers.com" style={{ ...linkStyle, textDecoration:'none' }}>Accounting@huntspointhaulers.com</a>
+            <div style={{ color:'var(--white-dim)',fontSize:14,lineHeight:1.4,marginBottom:12 }}>Tri-State Area Based</div>
+            <div style={{ color:'var(--white-dim)',fontSize:14,lineHeight:1 }}>24/7/365 Dispatch</div>
           </div>
         </div>
 
         <div style={{ borderTop:'1px solid var(--rule)', paddingTop:24, display:'flex', justifyContent:'space-between', alignItems:'center', gap:16, flexWrap:'wrap' }}>
-          <div style={{ color:'rgba(240,237,232,0.3)',fontSize:12,letterSpacing:'0.05em' }}>© 2026 Hunts Point Haulers LLC. All rights reserved. MC# 000000 · DOT# 000000</div>
+          <div style={{ color:'rgba(240,237,232,0.3)',fontSize:12,letterSpacing:'0.05em' }}>© 2026 Hunts Point Haulers LLC. All rights reserved. MC# 1686639 · DOT# 4322716</div>
           <div style={{ display:'flex',gap:24 }}>
             {['Privacy Policy','Terms of Service'].map(t => (
               <span key={t} style={{ color:'rgba(240,237,232,0.3)',fontSize:12,letterSpacing:'0.05em' }}>{t}</span>
@@ -316,16 +317,16 @@ function Footer({ setPage, tweaks }) {
 /* ─── HOME PAGE ─── */
 function HomePage({ setPage, tweaks }) {
   const stats = [
-    { val:'15+', label:'Years Operating' },
+    { val:'Est. 2024', label:'Tri-State Based' },
     { val:'48', label:'States Licensed' },
-    { val:'500K+', label:'Miles Annually' },
-    { val:'24/7', label:'Dispatch Support' },
+    { val:'1MM+', label:'Miles Annually' },
+    { val:'24/7/365', label:'Dispatch Support' },
   ];
 
   const services = [
-    { icon:'⬛', title:'Interstate Freight', desc:'Full truckload and LTL services across all 48 continental states. FMCSA licensed, fully insured.' },
-    { icon:'⬛', title:'NYC Metro Delivery', desc:'Deep experience navigating NYC\'s complex logistics — permits, routes, timing, and compliance.' },
-    { icon:'⬛', title:'Produce & Reefer', desc:'Temperature-controlled transport for perishables. Hunts Point Food Distribution specialists.' },
+    { icon:'⬛', title:'Interstate Freight', desc:'Full truckload (FTL), cross-docking, and OTR services across all 48 states. FMCSA licensed, fully insured. Door to door — shipper to dock.' },
+    { icon:'⬛', title:'NYC Metro Delivery', desc:'Deep expertise in NYC\'s complex freight network — cross-docking, consolidation, OTR, and time-window deliveries across all five boroughs.' },
+    { icon:'⬛', title:'Produce & Reefer', desc:'Specialists in produce transportation. Temperature-controlled transport with USDA and quality control reports available upon request.' },
     { icon:'⬛', title:'Port-Access Routes', desc:'NJ/NY port runs including Port Newark, Port Elizabeth, and Red Hook terminals.' },
   ];
 
@@ -354,7 +355,7 @@ function HomePage({ setPage, tweaks }) {
             {/* Eyebrow */}
             <div style={{ display:'flex',alignItems:'center',gap:12,marginBottom:32 }}>
               <div style={{ width:40,height:2,background:tweaks.accentColor }} />
-              <span style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.3em',textTransform:'uppercase' }}>Interstate Freight Carrier · Est. 2009</span>
+              <span style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.3em',textTransform:'uppercase' }}>Tri-State Freight Carrier · Est. 2024</span>
             </div>
 
             <h1 className="r-hero-h1" style={{ fontSize:'clamp(44px,8vw,96px)',color:'var(--white)',marginBottom:8,lineHeight:0.95 }}>
@@ -365,7 +366,7 @@ function HomePage({ setPage, tweaks }) {
             </h1>
 
             <p style={{ fontSize:18,color:'var(--white-dim)',maxWidth:520,lineHeight:1.7,marginBottom:48,fontWeight:400 }}>
-              Bogota, NJ-based interstate carrier with deep NYC metro expertise. From the Hunts Point Food Distribution Center to every major port — we move what matters, on time, every time.
+              Tri-state area carrier with deep NYC metro expertise. Door to door — shipper to dock. FTL, cross-docking, OTR, and produce specialists. We move what matters, on time, every time.
             </p>
 
             <div style={{ display:'flex',gap:16,flexWrap:'wrap' }}>
@@ -422,11 +423,11 @@ function HomePage({ setPage, tweaks }) {
             <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.25em',textTransform:'uppercase',marginBottom:12 }}>Why Choose Us</div>
             <h2 className="r-section-h2" style={{ fontSize:52,color:'var(--white)',marginBottom:24 }}>BUILT FOR NYC FREIGHT</h2>
             <p style={{ color:'var(--white-dim)',fontSize:16,lineHeight:1.8,marginBottom:40 }}>
-              Operating in and out of New York City requires more than a truck and a license. It demands knowledge of every restricted route, every permit requirement, every delivery window at every major distribution hub. We've built that knowledge over 15 years.
+              Operating in the NYC metro requires more than a truck and a license. It demands knowledge of every route, every delivery window, and every distribution hub in the tri-state area. We handle it all — door to door, shipper to dock.
             </p>
             {[
-              'Hunts Point Food Distribution Center specialists',
-              'NYC-permitted vehicles, all boroughs',
+              'Specialists in produce transportation',
+              'FTL, cross-docking & OTR capability',
               'Port Newark & Port Elizabeth access',
               'FMCSA-compliant, fully insured operations',
               'Owner-operated reliability — no brokering your load',
@@ -452,10 +453,10 @@ function HomePage({ setPage, tweaks }) {
         <div className="r-flex-stack" style={{ maxWidth:1280,margin:'0 auto',display:'flex',alignItems:'center',justifyContent:'space-between',position:'relative',zIndex:1,gap:32,flexWrap:'wrap' }}>
           <div>
             <h2 className="r-section-h2" style={{ fontSize:48,color:'#fff',marginBottom:8 }}>READY TO MOVE YOUR FREIGHT?</h2>
-            <p style={{ color:'rgba(255,255,255,0.85)',fontSize:16 }}>Get a competitive quote within 2 hours. Available 24/7 for time-sensitive loads.</p>
+            <p style={{ color:'rgba(255,255,255,0.85)',fontSize:16 }}>Get a competitive quote within minutes. Available 24/7/365 for time-sensitive loads.</p>
           </div>
           <div style={{ display:'flex',gap:16,flexShrink:0,flexWrap:'wrap' }}>
-            <a href="tel:2015550182" style={{ background:'#fff',color:tweaks.accentColor,fontFamily:'Barlow Condensed',fontWeight:800,fontSize:16,letterSpacing:'0.1em',textTransform:'uppercase',padding:'18px 36px',textDecoration:'none',display:'block' }}>(201) 555-0182</a>
+            <a href="tel:2019082622" style={{ background:'#fff',color:tweaks.accentColor,fontFamily:'Barlow Condensed',fontWeight:800,fontSize:16,letterSpacing:'0.1em',textTransform:'uppercase',padding:'18px 36px',textDecoration:'none',display:'block' }}>(201) 908-2622</a>
             <button onClick={() => setPage('Contact')} style={{ background:'rgba(0,0,0,0.2)',border:'2px solid #fff',color:'#fff',fontFamily:'Barlow Condensed',fontWeight:800,fontSize:16,letterSpacing:'0.1em',textTransform:'uppercase',padding:'18px 36px',cursor:'pointer' }}>Request Quote</button>
           </div>
         </div>
@@ -489,22 +490,22 @@ function ServicesPage({ setPage, tweaks }) {
     {
       title: 'Interstate Freight',
       tag: '48-State Licensed',
-      desc: 'Full truckload (FTL) and less-than-truckload (LTL) service across all 48 continental states. Whether you\'re moving a full trailer or need to share capacity, we offer competitive rates and proven reliability. Our drivers are experienced in long-haul routes through urban and rural corridors alike.',
-      specs: ['Up to 45,000 lbs capacity','Step deck & flatbed available','Real-time load tracking','FMCSA-licensed carrier'],
+      desc: 'Full truckload (FTL), cross-docking, and over-the-road (OTR) service across all 48 continental states. Door to door — we manage the entire move from shipper to dock. Competitive quotes within minutes, 24/7/365.',
+      specs: ['FTL & cross-docking','Over-the-road (OTR)','Door to door — shipper to dock','FMCSA-licensed & fully insured'],
       img: 'HIGHWAY INTERSTATE / TRUCK CONVOY',
     },
     {
       title: 'NYC Metro Deliveries',
       tag: 'All 5 Boroughs + Tri-State',
-      desc: 'New York City is among the most demanding freight environments in North America. We know the overnight windows, the permit requirements, the restricted routes in Manhattan, the loading dock protocols at every major distribution center in the five boroughs and surrounding metro.',
-      specs: ['Manhattan overnight permits','All-borough delivery capability','Time-window precision','Knowledge of every hub'],
+      desc: 'New York City is among the most demanding freight environments in North America. We specialize in cross-docking, consolidation, and OTR runs throughout the five boroughs and tri-state area — with precise time-window delivery at every major hub.',
+      specs: ['Cross-docking & consolidation','Over-the-road (OTR)','All-borough delivery capability','Time-window precision'],
       img: 'NYC SKYLINE / BROOKLYN BRIDGE / FREIGHT TRUCK',
     },
     {
       title: 'Produce & Reefer Transport',
-      tag: 'Hunts Point Specialists',
-      desc: 'Temperature-controlled transport is a specialized discipline. We run regular lanes to and from the Hunts Point Food Distribution Center — the largest food distribution hub in the world — with refrigerated trailers maintained to strict FDA/FSMA standards. Your perishables arrive cold, on time, and compliant.',
-      specs: ['Continuous temp monitoring','FDA/FSMA compliance','Hunts Point lane expertise','Pre-cooled units on request'],
+      tag: 'Produce Specialists',
+      desc: 'Produce transportation is our specialty. Temperature-controlled 53\' trailers, maintained to strict FDA/FSMA standards. USDA and quality control reports available as requested. Your perishables arrive cold, on time, and compliant.',
+      specs: ['Produce transportation specialists','USDA & QC reports on request','FDA/FSMA compliance','Pre-cooled units available'],
       img: 'HUNTS POINT FOOD DISTRIBUTION / REEFER TRAILER',
     },
     {
@@ -523,7 +524,7 @@ function ServicesPage({ setPage, tweaks }) {
         <div style={{ maxWidth:1280,margin:'0 auto' }}>
           <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.25em',textTransform:'uppercase',marginBottom:12 }}>What We Carry</div>
           <h1 className="r-page-h1" style={{ fontSize:72,color:'var(--white)',marginBottom:20 }}>OUR SERVICES</h1>
-          <p style={{ color:'var(--white-dim)',fontSize:18,maxWidth:600,lineHeight:1.7 }}>Purpose-built for the demands of the NYC freight corridor. Every service we offer is backed by hands-on operational experience.</p>
+          <p style={{ color:'var(--white-dim)',fontSize:18,maxWidth:600,lineHeight:1.7 }}>Tri-state area carrier built for the NYC metro. FTL, cross-docking, OTR, and produce specialists — door to door, shipper to dock.</p>
         </div>
       </div>
 
@@ -566,7 +567,7 @@ function ServicesPage({ setPage, tweaks }) {
       <div className="r-pad" style={{ background:tweaks.accentColor,padding:'60px 40px' }}>
         <div style={{ maxWidth:1280,margin:'0 auto',textAlign:'center' }}>
           <h2 className="r-section-h2" style={{ fontSize:48,color:'#fff',marginBottom:16 }}>NEED A CUSTOM FREIGHT SOLUTION?</h2>
-          <p style={{ color:'rgba(255,255,255,0.85)',fontSize:16,marginBottom:32 }}>Our dispatch team is available 24/7 to discuss your specific requirements.</p>
+          <p style={{ color:'rgba(255,255,255,0.85)',fontSize:16,marginBottom:32 }}>Our dispatch team is available 24/7/365 to discuss your specific requirements.</p>
           <button onClick={() => setPage('Contact')} style={{ background:'#fff',color:tweaks.accentColor,border:'none',fontFamily:'Barlow Condensed',fontWeight:800,fontSize:16,letterSpacing:'0.15em',textTransform:'uppercase',padding:'18px 48px',cursor:'pointer' }}>Contact Our Team →</button>
         </div>
       </div>
@@ -578,7 +579,7 @@ function ServicesPage({ setPage, tweaks }) {
 function AboutPage({ setPage, tweaks }) {
   const values = [
     { title:'Reliability', desc:'A commitment that started on Day 1 and has never wavered. When we say we\'ll be there, we\'ll be there.' },
-    { title:'Expertise', desc:'15+ years moving freight in and out of the most demanding urban freight market in the country.' },
+    { title:'Expertise', desc:'Specialists in produce transportation and NYC metro freight. We know every hub, every route, every delivery window in the tri-state area.' },
     { title:'Transparency', desc:'No hidden fees, no lost loads, no excuses. You know where your freight is at all times.' },
     { title:'Compliance', desc:'FMCSA-licensed. Fully insured. Every driver background-checked and HOS-compliant.' },
   ];
@@ -594,7 +595,7 @@ function AboutPage({ setPage, tweaks }) {
         <div style={{ maxWidth:1280,margin:'0 auto',position:'relative',zIndex:1 }}>
           <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.25em',textTransform:'uppercase',marginBottom:12 }}>Our Story</div>
           <h1 className="r-page-h1" style={{ fontSize:72,color:'var(--white)',marginBottom:20 }}>ABOUT US</h1>
-          <p style={{ color:'var(--white-dim)',fontSize:18,maxWidth:560,lineHeight:1.7 }}>Founded in Bogota, NJ, by operators who grew up in the freight industry. We know this city, these roads, and this business.</p>
+          <p style={{ color:'var(--white-dim)',fontSize:18,maxWidth:560,lineHeight:1.7 }}>Tri-state area carrier built on deep NYC metro expertise. We handle every move door to door — shipper to dock — so you don't have to.</p>
         </div>
       </div>
 
@@ -602,22 +603,22 @@ function AboutPage({ setPage, tweaks }) {
       <div className="r-pad r-pad-v" style={{ padding:'100px 40px',background:tweaks.navyColor }}>
         <div className="r-grid-2" style={{ maxWidth:1280,margin:'0 auto',display:'grid',gridTemplateColumns:'1fr 1fr',gap:80 }}>
           <div>
-            <h2 className="r-section-h2" style={{ fontSize:48,color:'var(--white)',marginBottom:32 }}>HUNTS POINT IS IN OUR DNA</h2>
+            <h2 className="r-section-h2" style={{ fontSize:48,color:'var(--white)',marginBottom:32 }}>BUILT FOR THE NYC METRO</h2>
             <p style={{ color:'var(--white-dim)',fontSize:16,lineHeight:1.85,marginBottom:24 }}>
-              Hunts Point Haulers LLC was built around one conviction: the businesses that depend on the Hunts Point Food Distribution Center — and the broader NYC freight network — deserve a carrier that treats their loads like their own livelihood.
+              Hunts Point Haulers LLC was built around one conviction: shippers in the tri-state area deserve a carrier that handles every detail — from the first call to the final dock door. No brokers. No middlemen. Just reliable execution.
             </p>
             <p style={{ color:'var(--white-dim)',fontSize:16,lineHeight:1.85,marginBottom:24 }}>
-              We run dedicated lanes in and out of the Market daily. We know the gate procedures, the dock assignments, the inspector names, and the fastest legal routes for every window of every night. That institutional knowledge is our competitive advantage — and it's yours when you work with us.
+              We specialize in produce transportation, running dedicated reefer lanes in and out of the NYC metro daily. We know the gate procedures, the dock assignments, and the fastest compliant routes for every time window. That knowledge is your competitive advantage.
             </p>
             <p style={{ color:'var(--white-dim)',fontSize:16,lineHeight:1.85 }}>
-              From a single truck to a growing fleet, every decision we've made has been in service of one goal: being the most reliable carrier in the NYC metro. That reputation is built load by load, delivery by delivery — and we don't take a single one for granted.
+              Every load is handled with the same commitment: on time, in full, compliant, and communicated. That's the standard we hold ourselves to — load by load, delivery by delivery.
             </p>
           </div>
           <div>
             <div style={{ background:'var(--navy-mid)',padding:'40px',borderLeft:`3px solid ${tweaks.accentColor}`,marginBottom:32 }}>
-              <div style={{ fontFamily:'Barlow Condensed',fontWeight:900,fontSize:64,color:tweaks.accentColor,lineHeight:1 }}>2009</div>
+              <div style={{ fontFamily:'Barlow Condensed',fontWeight:900,fontSize:64,color:tweaks.accentColor,lineHeight:1 }}>2024</div>
               <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:16,color:'var(--white)',marginTop:4 }}>Year Founded</div>
-              <div style={{ color:'var(--white-dim)',fontSize:14,marginTop:12,lineHeight:1.7 }}>Started with one truck and a commitment to show up on time, every time. That hasn't changed — only the fleet has grown.</div>
+              <div style={{ color:'var(--white-dim)',fontSize:14,marginTop:12,lineHeight:1.7 }}>Started with a commitment to show up on time, every time, and handle every load door to door. That hasn't changed — only the fleet has grown.</div>
             </div>
             <ImgPlaceholder label="FLEET LINEUP / TRUCK YARD" height={260} style={{ width:'100%' }} />
           </div>
@@ -646,8 +647,8 @@ function AboutPage({ setPage, tweaks }) {
           <h2 className="r-section-h2" style={{ fontSize:48,color:'var(--white)',marginBottom:48,textAlign:'center' }}>CREDENTIALS & COMPLIANCE</h2>
           <div className="r-grid-3" style={{ display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:24 }}>
             {[
-              { label:'FMCSA Authority', detail:'Active Motor Carrier Authority\nMC# 000000' },
-              { label:'USDOT Registered', detail:'United States DOT Number\nDOT# 000000' },
+              { label:'FMCSA Authority', detail:'Active Motor Carrier Authority\nMC# 1686639' },
+              { label:'USDOT Registered', detail:'United States DOT Number\nDOT# 4322716' },
               { label:'General Liability', detail:'$1M per occurrence\nFull cargo coverage' },
               { label:'NJ State Licensed', detail:'Commercial Vehicle Operations\nAll weight classes' },
               { label:'NYC Permitted', detail:'All borough permits current\nOversized available' },
@@ -669,10 +670,14 @@ function AboutPage({ setPage, tweaks }) {
 }
 
 /* ─── CONTACT PAGE ─── */
+const WEB3FORMS_ACCESS_KEY = 'cc2e979a-a7f9-4638-8509-1921413b1461';
+
 function ContactPage({ tweaks }) {
   const [form, setForm] = useState({ name:'',company:'',email:'',phone:'',origin:'',dest:'',commodity:'',weight:'',date:'',notes:'' });
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const validate = () => {
     const e = {};
@@ -684,11 +689,46 @@ function ContactPage({ tweaks }) {
     return e;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const errs = validate();
     if (Object.keys(errs).length) { setErrors(errs); return; }
-    setSubmitted(true);
+
+    setSubmitting(true);
+    setSubmitError('');
+
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          subject: `Quote request from ${form.name}${form.company ? ' (' + form.company + ')' : ''}`,
+          from_name: 'Hunts Point Haulers — Website',
+          replyto: form.email,
+          name: form.name,
+          company: form.company,
+          email: form.email,
+          phone: form.phone,
+          origin: form.origin,
+          destination: form.dest,
+          commodity: form.commodity,
+          weight: form.weight,
+          pickup_date: form.date,
+          notes: form.notes,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.success) {
+        setSubmitted(true);
+      } else {
+        setSubmitError((data && data.message) || 'Submission failed. Please call dispatch at (201) 908-2622.');
+        setSubmitting(false);
+      }
+    } catch (err) {
+      setSubmitError('Network error. Please call dispatch at (201) 908-2622.');
+      setSubmitting(false);
+    }
   };
 
   const inputStyle = (field) => ({
@@ -705,8 +745,8 @@ function ContactPage({ tweaks }) {
         <div style={{ width:72,height:72,background:tweaks.accentColor,margin:'0 auto 32px',display:'flex',alignItems:'center',justifyContent:'center',clipPath:'polygon(0 0, 85% 0, 100% 100%, 15% 100%)' }}>
           <span style={{ fontSize:32,color:'#fff' }}>✓</span>
         </div>
-        <h2 className="r-section-h2" style={{ fontFamily:'Barlow Condensed',fontWeight:900,fontSize:48,color:'var(--white)',marginBottom:16 }}>THANKS — PLEASE CALL US</h2>
-        <p style={{ color:'var(--white-dim)',fontSize:16,lineHeight:1.7,marginBottom:32 }}>Our online form is being upgraded. To lock in a quote now, call dispatch at <a href="tel:2015550182" style={{ color:'var(--white)',fontWeight:700 }}>(201) 555-0182</a> or email <a href="mailto:quotes@huntspointshaulers.com" style={{ color:'var(--white)',fontWeight:700 }}>quotes@huntspointshaulers.com</a>.</p>
+        <h2 className="r-section-h2" style={{ fontFamily:'Barlow Condensed',fontWeight:900,fontSize:48,color:'var(--white)',marginBottom:16 }}>QUOTE REQUEST RECEIVED</h2>
+        <p style={{ color:'var(--white-dim)',fontSize:16,lineHeight:1.7,marginBottom:32 }}>Our dispatch team will review your request and contact you within minutes. For urgent loads, call us directly at <a href="tel:2019082622" style={{ color:'var(--white)',fontWeight:700 }}>(201) 908-2622</a> — press 1 for dispatch.</p>
         <button onClick={() => setSubmitted(false)} style={{ background:tweaks.accentColor,border:'none',color:'#fff',fontFamily:'Barlow Condensed',fontWeight:800,fontSize:14,letterSpacing:'0.15em',textTransform:'uppercase',padding:'14px 36px',cursor:'pointer' }}>Submit Another Request</button>
       </div>
     </div>
@@ -719,7 +759,7 @@ function ContactPage({ tweaks }) {
         <div style={{ maxWidth:1280,margin:'0 auto' }}>
           <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:13,color:tweaks.accentColor,letterSpacing:'0.25em',textTransform:'uppercase',marginBottom:12 }}>Get in Touch</div>
           <h1 className="r-page-h1" style={{ fontSize:72,color:'var(--white)',marginBottom:20 }}>CONTACT US</h1>
-          <p style={{ color:'var(--white-dim)',fontSize:18,maxWidth:520 }}>For quotes, dispatch, or general inquiries. We respond within 2 hours during business hours, and 24/7 for time-sensitive loads.</p>
+          <p style={{ color:'var(--white-dim)',fontSize:18,maxWidth:520 }}>For quotes, dispatch, or general inquiries. Competitive quotes within minutes. Available 24/7/365 for time-sensitive loads.</p>
         </div>
       </div>
 
@@ -728,19 +768,27 @@ function ContactPage({ tweaks }) {
 
           {/* Contact info */}
           <div>
-            <div style={{ marginBottom:48 }}>
+            <div style={{ marginBottom:40 }}>
               <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:12,color:tweaks.accentColor,letterSpacing:'0.2em',textTransform:'uppercase',marginBottom:6 }}>Phone</div>
-              <a href="tel:2015550182" style={{ fontFamily:'Barlow Condensed',fontWeight:800,fontSize:28,color:'var(--white)',textDecoration:'none' }}>(201) 555-0182</a>
-              <div style={{ color:'var(--white-dim)',fontSize:13,marginTop:4 }}>24/7 Dispatch Available</div>
+              <a href="tel:2019082622" style={{ fontFamily:'Barlow Condensed',fontWeight:800,fontSize:28,color:'var(--white)',textDecoration:'none' }}>(201) 908-2622</a>
+              <div style={{ color:'var(--white-dim)',fontSize:13,marginTop:4 }}>Press 1 for Dispatch · Press 2 for Accounting</div>
+              <div style={{ color:'var(--white-dim)',fontSize:13 }}>Available 24/7/365</div>
             </div>
-            <div style={{ marginBottom:48 }}>
-              <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:12,color:tweaks.accentColor,letterSpacing:'0.2em',textTransform:'uppercase',marginBottom:6 }}>Email</div>
-              <a href="mailto:dispatch@huntspointshaulers.com" style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:20,color:'var(--white)',textDecoration:'none',wordBreak:'break-word' }}>dispatch@huntspointshaulers.com</a>
-              <div style={{ color:'var(--white-dim)',fontSize:13,marginTop:4 }}>Quotes: <a href="mailto:quotes@huntspointshaulers.com" style={{ color:'var(--white-dim)',textDecoration:'none' }}>quotes@huntspointshaulers.com</a></div>
+            <div style={{ marginBottom:40 }}>
+              <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:12,color:tweaks.accentColor,letterSpacing:'0.2em',textTransform:'uppercase',marginBottom:6 }}>Dispatch</div>
+              <a href="mailto:Dispatch@huntspointhaulers.com" style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:18,color:'var(--white)',textDecoration:'none',wordBreak:'break-word' }}>Dispatch@huntspointhaulers.com</a>
             </div>
-            <div style={{ marginBottom:48 }}>
-              <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:12,color:tweaks.accentColor,letterSpacing:'0.2em',textTransform:'uppercase',marginBottom:6 }}>Office</div>
-              <div style={{ color:'var(--white)',fontSize:16,lineHeight:1.7 }}>Bogota, NJ 07603<br/>Bergen County, New Jersey</div>
+            <div style={{ marginBottom:40 }}>
+              <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:12,color:tweaks.accentColor,letterSpacing:'0.2em',textTransform:'uppercase',marginBottom:6 }}>Accounting</div>
+              <a href="mailto:Accounting@huntspointhaulers.com" style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:18,color:'var(--white)',textDecoration:'none',wordBreak:'break-word' }}>Accounting@huntspointhaulers.com</a>
+            </div>
+            <div style={{ marginBottom:40 }}>
+              <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:12,color:tweaks.accentColor,letterSpacing:'0.2em',textTransform:'uppercase',marginBottom:6 }}>Careers</div>
+              <a href="mailto:jobs@huntspointhaulers.com" style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:18,color:'var(--white)',textDecoration:'none',wordBreak:'break-word' }}>jobs@huntspointhaulers.com</a>
+            </div>
+            <div style={{ marginBottom:40 }}>
+              <div style={{ fontFamily:'Barlow Condensed',fontWeight:700,fontSize:12,color:tweaks.accentColor,letterSpacing:'0.2em',textTransform:'uppercase',marginBottom:6 }}>Location</div>
+              <div style={{ color:'var(--white)',fontSize:15,lineHeight:1.7 }}>Tri-State Area Based<br/>Serving NY · NJ · CT and all 48 states</div>
             </div>
             <div style={{ background:'var(--navy-mid)',padding:'28px',borderLeft:`3px solid ${tweaks.accentColor}` }}>
               <div style={{ fontFamily:'Barlow Condensed',fontWeight:800,fontSize:18,color:'var(--white)',marginBottom:8 }}>HOURS OF OPERATION</div>
@@ -748,7 +796,7 @@ function ContactPage({ tweaks }) {
                 Mon–Fri: 6:00 AM – 8:00 PM<br/>
                 Saturday: 7:00 AM – 4:00 PM<br/>
                 Sunday: Emergency dispatch only<br/>
-                <a href="tel:2015550199" style={{ color:tweaks.accentColor,fontWeight:600,textDecoration:'none' }}>24/7 Emergency: (201) 555-0199</a>
+                <span style={{ color:tweaks.accentColor,fontWeight:600 }}>24/7/365 Emergency Dispatch Available</span>
               </div>
             </div>
           </div>
@@ -804,15 +852,54 @@ function ContactPage({ tweaks }) {
                   style={{ ...inputStyle('notes'),resize:'vertical',minHeight:100 }} />
               </div>
 
-              <button type="submit" style={{
-                background:tweaks.accentColor,border:'none',cursor:'pointer',
+              <button type="submit" disabled={submitting} style={{
+                background:tweaks.accentColor,border:'none',cursor:submitting?'wait':'pointer',
                 fontFamily:'Barlow Condensed',fontWeight:800,fontSize:16,letterSpacing:'0.15em',
                 textTransform:'uppercase',color:'#fff',padding:'18px 48px',
                 clipPath:'polygon(0 0, 97% 0, 100% 100%, 3% 100%)',
                 transition:'all 0.2s',
-              }}>Submit Quote Request →</button>
-              <div style={{ color:'var(--white-dim)',fontSize:12,marginTop:12 }}>We respond within 2 business hours. All information is kept strictly confidential.</div>
+                opacity:submitting?0.6:1,
+              }}>{submitting ? 'Sending…' : 'Submit Quote Request →'}</button>
+              {submitError && <div style={{ color:tweaks.accentColor,fontSize:13,marginTop:12,fontWeight:600 }}>{submitError}</div>}
+              <div style={{ color:'var(--white-dim)',fontSize:12,marginTop:12 }}>We respond within minutes. All information is kept strictly confidential.</div>
             </form>
+
+            {/* New Customer Onboarding */}
+            <div style={{ marginTop:64, borderTop:'1px solid var(--rule)', paddingTop:48 }}>
+              <div style={{ fontFamily:'Barlow Condensed',fontWeight:800,fontSize:28,color:'var(--white)',marginBottom:8 }}>NEW CUSTOMER SETUP</div>
+              <div style={{ width:48,height:3,background:tweaks.accentColor,marginBottom:20 }} />
+              <p style={{ color:'var(--white-dim)',fontSize:15,lineHeight:1.75,marginBottom:28 }}>
+                Ready to set up an account? Request our customer onboarding packet below. Complete the credit application and carrier setup form and return it to <span style={{ color:'var(--white)' }}>Accounting@huntspointhaulers.com</span>. Our team will have you active within 24–48 hours.
+              </p>
+              <div className="r-form-grid" style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:16 }}>
+                <a href="mailto:Accounting@huntspointhaulers.com?subject=New Customer Onboarding Request" style={{
+                  display:'flex', alignItems:'center', gap:16,
+                  background:'var(--navy-mid)', border:`1px solid ${tweaks.accentColor}44`,
+                  padding:'20px 24px', textDecoration:'none', transition:'border 0.2s',
+                }}>
+                  <div style={{ width:40,height:40,background:tweaks.accentColor,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,clipPath:'polygon(0 0,85% 0,100% 100%,15% 100%)' }}>
+                    <span style={{ color:'#fff',fontSize:18 }}>📋</span>
+                  </div>
+                  <div>
+                    <div style={{ fontFamily:'Barlow Condensed',fontWeight:800,fontSize:15,color:'var(--white)',textTransform:'uppercase',letterSpacing:'0.06em' }}>Customer Setup Packet</div>
+                    <div style={{ color:'var(--white-dim)',fontSize:12,marginTop:2 }}>Request via email</div>
+                  </div>
+                </a>
+                <a href="mailto:Dispatch@huntspointhaulers.com?subject=New Customer — Carrier Setup" style={{
+                  display:'flex', alignItems:'center', gap:16,
+                  background:'var(--navy-mid)', border:`1px solid ${tweaks.accentColor}44`,
+                  padding:'20px 24px', textDecoration:'none',
+                }}>
+                  <div style={{ width:40,height:40,background:'var(--navy-light)',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,clipPath:'polygon(0 0,85% 0,100% 100%,15% 100%)' }}>
+                    <span style={{ color:tweaks.accentColor,fontSize:18 }}>🚛</span>
+                  </div>
+                  <div>
+                    <div style={{ fontFamily:'Barlow Condensed',fontWeight:800,fontSize:15,color:'var(--white)',textTransform:'uppercase',letterSpacing:'0.06em' }}>Carrier Setup Form</div>
+                    <div style={{ color:'var(--white-dim)',fontSize:12,marginTop:2 }}>Contact dispatch directly</div>
+                  </div>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
