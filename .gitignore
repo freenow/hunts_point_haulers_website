@@ -9,3 +9,6 @@ Thumbs.db
 image.png
 debug.txt
 Hunts Point Haulers*.zip
+# DNS zone exports from GoDaddy
+huntspoint*.txt
+huntpoint*.txt

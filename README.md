@@ -38,29 +38,19 @@ Both `huntspointshaulers.com` and `huntpointshaulers.com` should point to the Ra
 - **Positioning shift (Luisa + Crystal-approved)**: "Interstate" → "Tri-State" framing; Est. 2024; stats updated (1MM+ miles, 24/7/365); "Hunts Point Market specialist" claims replaced with "produce transportation specialist" copy across Home / Services / About
 - **Reefer hero image** swapped for Luisa's new NYC-skyline-at-sunset reefer truck shot
 - **New Customer Setup** block added to Contact page (mailto CTAs for onboarding packet + carrier setup)
-
-### Not done
-Quote form still does not submit anywhere. See blocking items below.
+- **Quote form wired to Web3Forms** (`index.html:701`, access key `cc2e979a-…`). `Dispatch@huntspointhaulers.com` is verified on the Web3Forms dashboard and is the sole recipient — no code change needed to reroute.
 
 ---
 
 ## OUTSTANDING — needed from the business
 
-### 1. Quote form backend
-The form at `ContactPage` validates fields then just shows a success screen — submitted data is discarded (`handleSubmit`, grep for `setSubmitted(true)`).
-
-**Pick one provider** and give me the endpoint URL — I'll wire it in ~5 min:
-- Formspree (free 50/mo) — https://formspree.io
-- Web3Forms (free, unlimited) — https://web3forms.com
-- Getform / Basin / Formspark — equivalent alternatives
-
-### 2. Street / mailing address *(nice-to-have)*
+### 1. Street / mailing address *(nice-to-have)*
 Site currently says only "Tri-State Area Based / Serving NY · NJ · CT" on Contact. If there's a physical HQ address to publish, provide it and I'll slot it into the Contact "Location" block.
 
-### 3. Domain confirmation *(pre-launch check)*
-Luisa's emails are at `huntspointhaulers.com` (no 's' after "hauler"). The GoDaddy domains listed above are `huntspointshaulers.com` / `huntpointshaulers.com` / `huntspointhauler.com` — none is an exact match. Before launch, confirm which domain actually hosts the MX records so the mailto links resolve.
+### 2. Domain confirmation *(pre-launch check — BLOCKER for mailto links)*
+Luisa's emails are at `huntspointhaulers.com` (singular "hunt", plural "haulers"). The GoDaddy domains listed above are `huntspointshaulers.com` / `huntpointshaulers.com` / `huntspointhauler.com` — none is an exact match. Every mailto in `index.html` (footer, contact page, onboarding CTAs) points at `huntspointhaulers.com`. Before launch, confirm which domain actually hosts the MX records so the mailto links resolve — or update the mailtos to whichever domain is receiving mail.
 
-### 4. Unverified marketing claims
+### 3. Unverified marketing claims
 Confirm:
 - `48` States Licensed (stats)
 - `1MM+` Miles Annually (stats)
@@ -70,7 +60,6 @@ Confirm:
 
 ## Nice-to-have (post-launch)
 
-- Privacy Policy / Terms of Service pages (footer links are currently dead text — index.html:312)
 - Real team/founder content on About page (currently generic copy)
 - Swap CDN React + in-browser Babel for a Vite build — removes JSX-compile-on-load, faster first paint
 - Add favicon + Open Graph / Twitter Card meta tags for link previews
@@ -80,8 +69,6 @@ Confirm:
 
 ## For a new session picking this up
 
-When the form endpoint is chosen, the assistant should:
-
 1. Read this README first
-2. Update `handleSubmit` in `ContactPage` (grep for `setSubmitted(true)`) to `POST` the form data as `application/json` to the endpoint, keep the existing validation, and only flip `setSubmitted(true)` on a successful response. Add a minimal error branch that keeps the form mounted on failure
-3. Commit and push — Railway auto-deploys on push to `main`
+2. Outstanding blocker before DNS cutover is the email-domain mismatch (see "Domain confirmation" above). Everything else on the outstanding list is nice-to-have or cosmetic.
+3. Railway auto-deploys on push to `main`
